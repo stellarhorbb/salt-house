@@ -1,0 +1,437 @@
+[gd_scene format=3 uid="uid://bpbfk7wqu1c66"]
+
+[ext_resource type="Script" uid="uid://gkp7dg7qpj3i" path="res://scripts/ui/battle_scene.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://dmi17alnu3pan" path="res://assets/fonts/LondrinaSolid-Regular.ttf" id="2"]
+[ext_resource type="Material" uid="uid://cb7bqh6uene3y" path="res://vfx/materials/wave_top.tres" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="pb_fill"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="BattleScene" type="Control" unique_id=341472177]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+ui_margin = 40
+
+[node name="WaveBackground" type="ColorRect" parent="." unique_id=973449317]
+material = ExtResource("3")
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 230.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Content" type="Control" parent="." unique_id=111111111]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopBar" type="Control" parent="Content" unique_id=1804491336]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 130.0
+grow_horizontal = 2
+
+[node name="ZoneInfo" type="VBoxContainer" parent="Content/TopBar" unique_id=1436130440]
+layout_mode = 1
+offset_right = 360.0
+offset_bottom = 130.0
+
+[node name="ZoneNameLabel" type="Label" parent="Content/TopBar/ZoneInfo" unique_id=484751208]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 32
+text = "THE SURFACE"
+uppercase = true
+
+[node name="DepthLabel" type="Label" parent="Content/TopBar/ZoneInfo" unique_id=1303604965]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 56
+text = "0.1"
+uppercase = true
+
+[node name="EntityBarContainer" type="VBoxContainer" parent="Content/TopBar" unique_id=1530032105]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -346.0
+offset_right = 346.0
+offset_bottom = 100.0
+grow_horizontal = 2
+
+[node name="EntityBarRow" type="HBoxContainer" parent="Content/TopBar/EntityBarContainer" unique_id=778990123]
+layout_mode = 2
+
+[node name="TurnCounterLabel" type="Label" parent="Content/TopBar/EntityBarContainer/EntityBarRow" unique_id=889101234]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "?"
+uppercase = true
+
+[node name="EntitySaltLabel" type="Label" parent="Content/TopBar/EntityBarContainer/EntityBarRow" unique_id=856980064]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "500"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="EntityProgressBar" type="ProgressBar" parent="Content/TopBar/EntityBarContainer" unique_id=1891579949]
+custom_minimum_size = Vector2(693, 25)
+layout_mode = 2
+theme_override_styles/fill = SubResource("pb_fill")
+show_percentage = false
+
+[node name="SaltInfo" type="VBoxContainer" parent="Content/TopBar" unique_id=827727196]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_bottom = 130.0
+grow_horizontal = 0
+
+[node name="SaltTitleLabel" type="Label" parent="Content/TopBar/SaltInfo" unique_id=725799047]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 32
+text = "SALT"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="SaltAmountLabel" type="Label" parent="Content/TopBar/SaltInfo" unique_id=1599905410]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 56
+text = "100"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="StakeDisplay" type="HBoxContainer" parent="Content" unique_id=545376283]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -323.0
+offset_top = -47.0
+offset_right = 323.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 35
+
+[node name="SaltColumn" type="VBoxContainer" parent="Content/StakeDisplay" unique_id=1087140386]
+layout_mode = 2
+
+[node name="SaltLabel" type="Label" parent="Content/StakeDisplay/SaltColumn" unique_id=1533815895]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 41
+text = "SALT"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="SaltPanel" type="Panel" parent="Content/StakeDisplay/SaltColumn" unique_id=1598101709]
+custom_minimum_size = Vector2(280, 95)
+layout_mode = 2
+
+[node name="SaltValueLabel" type="Label" parent="Content/StakeDisplay/SaltColumn/SaltPanel" unique_id=601587472]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 76
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="MultiplierColumn" type="VBoxContainer" parent="Content/StakeDisplay" unique_id=424994513]
+layout_mode = 2
+
+[node name="MultiplierSpacer" type="Label" parent="Content/StakeDisplay/MultiplierColumn" unique_id=424994514]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 41
+
+[node name="MultiplierLabel" type="Label" parent="Content/StakeDisplay/MultiplierColumn" unique_id=424994515]
+custom_minimum_size = Vector2(0, 95)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 76
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="PressureColumn" type="VBoxContainer" parent="Content/StakeDisplay" unique_id=1897115019]
+layout_mode = 2
+
+[node name="PressureLabel" type="Label" parent="Content/StakeDisplay/PressureColumn" unique_id=1615279710]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 41
+text = "PRSR"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="PressurePanel" type="Panel" parent="Content/StakeDisplay/PressureColumn" unique_id=373388504]
+custom_minimum_size = Vector2(280, 95)
+layout_mode = 2
+
+[node name="PressureValueLabel" type="Label" parent="Content/StakeDisplay/PressureColumn/PressurePanel" unique_id=1740931783]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 76
+text = "1.00"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="PreparationLayer" type="VBoxContainer" parent="Content" unique_id=1449063694]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -367.0
+offset_top = -170.0
+offset_right = 367.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="BetButtons" type="HBoxContainer" parent="Content/PreparationLayer" unique_id=1672379279]
+layout_mode = 2
+alignment = 1
+
+[node name="BetButton10" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=445995905]
+custom_minimum_size = Vector2(170, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "+10"
+
+[node name="BetButton20" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1261029711]
+custom_minimum_size = Vector2(170, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "+20"
+
+[node name="BetButton50" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=47761949]
+custom_minimum_size = Vector2(170, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "+50"
+
+[node name="BetButton100" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1114835532]
+custom_minimum_size = Vector2(170, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "+100"
+
+[node name="DealButton" type="Button" parent="Content/PreparationLayer" unique_id=1279093567]
+custom_minimum_size = Vector2(734, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "DEAL"
+
+[node name="PlayLayer" type="Control" parent="Content" unique_id=1066095209]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DealerArea" type="VBoxContainer" parent="Content/PlayLayer" unique_id=1024573465]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.2
+anchor_right = 0.5
+anchor_bottom = 0.2
+offset_left = -200.0
+offset_right = 200.0
+
+[node name="DealerScoreLabel" type="Label" parent="Content/PlayLayer/DealerArea" unique_id=1460498540]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 46
+text = "0"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="DealerHandContainer" type="Control" parent="Content/PlayLayer/DealerArea" unique_id=1782251766]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+
+[node name="PlayerArea" type="Control" parent="Content/PlayLayer" unique_id=1017575284]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.6
+anchor_right = 0.5
+anchor_bottom = 0.6
+offset_left = -200.0
+offset_right = 200.0
+offset_bottom = 130.0
+
+[node name="PlayerHandContainer" type="Control" parent="Content/PlayLayer/PlayerArea" unique_id=100870042]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerScoreLabel" type="Label" parent="Content/PlayLayer/PlayerArea" unique_id=352341742]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 60.0
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 46
+text = "0"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="ResultLabel" type="Label" parent="Content/PlayLayer" unique_id=228847301]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -60.0
+offset_right = 300.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 96
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="ActionButtons" type="HBoxContainer" parent="Content/PlayLayer" unique_id=1557512581]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -264.0
+offset_top = -93.0
+offset_right = 264.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HitButton" type="Button" parent="Content/PlayLayer/ActionButtons" unique_id=642082964]
+custom_minimum_size = Vector2(240, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "HIT"
+
+[node name="StandButton" type="Button" parent="Content/PlayLayer/ActionButtons" unique_id=182233735]
+custom_minimum_size = Vector2(240, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "STAND"
+
+[node name="GameOverOverlay" type="Control" parent="." unique_id=994563227]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DimBackground" type="ColorRect" parent="GameOverOverlay" unique_id=112674338]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="ContentBox" type="VBoxContainer" parent="GameOverOverlay" unique_id=223785449]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="GameOverTitleLabel" type="Label" parent="GameOverOverlay/ContentBox" unique_id=334896550]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 96
+text = "GAME OVER"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="GameOverSubLabel" type="Label" parent="GameOverOverlay/ContentBox" unique_id=445907661]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+horizontal_alignment = 1
+uppercase = true
+
+[node name="RestartButton" type="Button" parent="GameOverOverlay/ContentBox" unique_id=556018772]
+custom_minimum_size = Vector2(300, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "RESTART"

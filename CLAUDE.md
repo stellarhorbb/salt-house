@@ -40,6 +40,7 @@ Ces points sont tranchés — ne pas les remettre en question sans que le user l
 Référence complète : `docs/project-conventions.md`
 
 Les points non-négociables :
+- **Tous les identifiants en anglais** — variables, fonctions, classes, constantes, signaux, noms de fichiers. Les commentaires peuvent être en français.
 - Toute valeur de balancing → `.tres` ou `game_rules.gd`. Zéro magic number dans le code.
 - Communication entre systèmes → Signals uniquement. Jamais d'appel direct entre Managers.
 - UI : tout nœud visible dans le scene tree. `@export` pour les valeurs visuelles. Pas de génération cachée par script.

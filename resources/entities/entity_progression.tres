@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="EntityProgressionResource" format=3 uid="uid://c0upci2o1sjds"]
+
+[ext_resource type="Script" uid="uid://c0pb8uv08jtkq" path="res://scripts/resources/entity_progression_resource.gd" id="1"]
+[ext_resource type="Script" uid="uid://ujmmkus0fcxe" path="res://scripts/resources/zone_stats_resource.gd" id="2"]
+
+[sub_resource type="Resource" id="zone_01"]
+script = ExtResource("2")
+zone_name = "The Surface"
+salt_pool = 100
+
+[sub_resource type="Resource" id="zone_02"]
+script = ExtResource("2")
+zone_number = 2
+zone_name = "The Shallows"
+salt_pool = 150
+
+[sub_resource type="Resource" id="zone_03"]
+script = ExtResource("2")
+zone_number = 3
+zone_name = "The Deep"
+salt_pool = 250
+mutations = 1
+
+[sub_resource type="Resource" id="zone_04"]
+script = ExtResource("2")
+zone_number = 4
+zone_name = "The Abyss"
+salt_pool = 350
+mutations = 2
+is_boss = true
+
+[resource]
+script = ExtResource("1")
+zones = Array[ExtResource("2")]([SubResource("zone_01"), SubResource("zone_02"), SubResource("zone_03"), SubResource("zone_04")])

@@ -6,6 +6,23 @@
 
 ## 1. Principes Fondamentaux
 
+### 1.0 Langue du code : noms en anglais
+
+**Tous les identifiants sont en anglais** — variables, fonctions, classes, constantes, signaux, noms de fichiers.
+Les commentaires peuvent être en français ou en anglais, au choix.
+
+```gdscript
+# ❌ Interdit
+var sel_joueur: int = 0
+const FAMILLE_CARREAU := &"carreau"
+
+# ✅ Correct
+var player_salt: int = 0                    # Salt du joueur
+const FAMILY_DIAMONDS := &"diamonds"        # Carreau — orange
+```
+
+---
+
 ### 1.1 Resource-driven design
 Toute valeur susceptible d'être modifiée (balancing, contenu, comportement) **vit dans un `.tres`**, jamais dans le code.
 

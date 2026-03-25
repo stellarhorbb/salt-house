@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://b176bbhdb0ugs"]
+
+[ext_resource type="Script" uid="uid://b8px01w87oydm" path="res://scripts/ui/hud.gd" id="1"]
+
+[node name="HUD" type="Control" unique_id=722809382]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=71947814]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+
+[node name="SaltDisplay" type="HBoxContainer" parent="TopBar" unique_id=2018957270]
+layout_mode = 2
+
+[node name="SaltLabel" type="Label" parent="TopBar/SaltDisplay" unique_id=883484980]
+layout_mode = 2
+text = "Salt :"
+
+[node name="SaltValue" type="Label" parent="TopBar/SaltDisplay" unique_id=899479525]
+layout_mode = 2
+text = "0"
+
+[node name="PressureDisplay" type="HBoxContainer" parent="TopBar" unique_id=643721734]
+layout_mode = 2
+
+[node name="PRSRLabel" type="Label" parent="TopBar/PressureDisplay" unique_id=1645549529]
+layout_mode = 2
+text = "PRSR :"
+
+[node name="PressureValue" type="Label" parent="TopBar/PressureDisplay" unique_id=697708558]
+layout_mode = 2
+text = "1.0"
+
+[node name="DepthDisplay" type="HBoxContainer" parent="TopBar" unique_id=1231651720]
+layout_mode = 2
+
+[node name="DepthLabel" type="Label" parent="TopBar/DepthDisplay" unique_id=1933046881]
+layout_mode = 2
+text = "Zone"
+
+[node name="DepthValue" type="Label" parent="TopBar/DepthDisplay" unique_id=610265621]
+layout_mode = 2
+text = "1-1"

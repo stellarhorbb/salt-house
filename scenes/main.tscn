@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://coiiswecjnepe"]
+
+[ext_resource type="Script" uid="uid://bf5bvx342pjja" path="res://scripts/ui/main.gd" id="1"]
+
+[node name="Main" type="Node" unique_id=115920392]
+script = ExtResource("1")
+
+[node name="SceneLayer" type="CanvasLayer" parent="." unique_id=1290463125]
+layer = 0
+
+[node name="SceneContainer" type="Control" parent="SceneLayer" unique_id=467151869]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HUDLayer" type="CanvasLayer" parent="." unique_id=2082578124]
+layer = 10
+
+[node name="HUD" type="Control" parent="HUDLayer" unique_id=1647641290]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

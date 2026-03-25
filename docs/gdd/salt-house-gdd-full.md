@@ -254,26 +254,29 @@ Ils touchent des axes **spécifiques au système BJ** :
 
 > ⚠️ BALANCING — Catalogue d'Echoes complet à concevoir. Objectif démo : 25 Echoes distincts.
 
-### 4.2 Les Moon Cards (Modificateurs de Règles)
+### 4.2 Les Moon Cards (Modificateurs de Run)
 
-Les Moon Cards ne sont pas des bonus de stats — elles changent **comment tu joues**. Elles modifient les règles du Blackjack pour ce combat ou cette Dive.
+Les Moon Cards sont des modificateurs **permanents pour toute la run** — elles boostent les valeurs fondamentales du jeu. Pas des effets ponctuels : des amplificateurs de style de jeu.
 
-| Axe | Exemple d'effet |
-|---|---|
-| Règle du 21 | "Le bust passe à 23 pour ce combat" |
-| Règle de bust | "Un bust ignoré par combat" |
-| Comportement de famille | "Les As Corail valent toujours 11" |
-| PRSR situationnel | "Si tu stands à 18 exactement → PRSR ×2" |
-| Mise | "Main gagnante rembourse ×2" |
-| Cartes spéciales | "Ajoute 2 cartes [Nom] au deck pour ce combat" |
+**Symétrie des 4 phases :**
 
-**4 familles = 4 thèmes de Moon Cards.** Chaque famille a ses Moon Cards associées qui synergisent avec ses caractéristiques.
+| Moon Card         | Levier           | Effet                                       |
+| ----------------- | ---------------- | ------------------------------------------- |
+| **First Quarter** | Pressure de base | +X à la Pressure plancher (permanent run)   |
+| **Last Quarter**  | Pressure par Hit | +X au gain de Pressure à chaque carte tirée |
+| **Full Moon**     | Salt gagné       | +X% au Salt volé par victoire (payout)      |
+| **New Moon**      | Salt misé        | +X% à la mise maximale autorisée            |
 
-> ❓ DÉCISION — Catalogue des Moon Cards par famille à définir. Objectif démo : 3-4 Moon Cards par famille = ~12-16 cartes total.
+→ First + Last Quarter : tu construis ta Pressure plus vite et plus haut.
+→ Full + New Moon : tu monétises davantage ou tu joues plus gros.
+
+Un joueur "safe" prend Full Moon. Un joueur "high stakes" prend New Moon.
+
+**Lunes spéciales (post-launch / Légendaires) :**
+- **Blood Moon**, **Super Moon**, **Eclipse**… — effets plus puissants, rares, potentiellement risqués.
+- Le système de rareté se construit naturellement : 4 phases de base = Commun, lunes spéciales = Rare/Légendaire.
 
 **Acquisition :** Via Nacre Shell (choix parmi 2-3) ou au Shop.
-
-**Slots :** Une Moon Card active à la fois, ou plusieurs ?
 
 > ❓ DÉCISION — Nombre de Moon Cards équipables simultanément ?
 
@@ -548,17 +551,19 @@ IDLE
 - [ ] Remélange du deck entre les mains d'un même combat ?
 - [ ] Mise minimum par main
 - [x] PRSR : accumulation sur tout le combat, reset entre chaque zone
-- [ ] Push (égalité) : PRSR conservé ou réinitialisé ? (probablement conservé, cohérent avec l'accumulation)
+- [ ] Push (égalité) : Pressure conservée ou réinitialisée ? (probablement conservée, cohérent avec l'accumulation)
 - [ ] Salt de départ
 - [ ] Seuil du dealer (17 classique, 21, ou variable)
 - [ ] Deck du dealer : visible ou opaque pour le joueur ?
 - [ ] Mutations : aléatoires ou fixes par Depth ?
 - [ ] Nombre de Mutations actives simultanément par Depth
 - [ ] Nombre de slots Echoes maximum
+- [x] Moon Cards : 4 phases de base (First/Last Quarter → Pressure, Full/New Moon → Salt) + lunes spéciales post-launch
 - [ ] Nombre de Moon Cards équipables simultanément
+- [ ] Valeurs exactes des bonus Moon Cards (⚠️ BALANCING)
 - [ ] Shells utilisables en combat ou uniquement hors combat ?
 - [ ] Limite de Shells stockés ?
 - [ ] Condition de défaite alternative (nombre de mains max ?)
 - [ ] The Shore : scope démo ou post-launch ?
-- [ ] Architecture signals vs singleton
+- [x] Architecture signals vs singleton → Signals uniquement, managers autoloads
 - [ ] Palette et symboles visuels des 4 familles

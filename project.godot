@@ -11,7 +11,33 @@ config_version=5
 [application]
 
 config/name="salt-house"
+run/main_scene="res://scenes/battle/battle_scene.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
+boot_splash/bg_color=Color(0.05, 0.05, 0.08, 1)
+config/icon="res://icon.svg"
+
+[autoload]
+
+SignalBus="*res://scripts/core/signal_bus.gd"
+GameRules="*res://scripts/core/game_rules.gd"
+GameManager="*res://scripts/core/game_manager.gd"
+SceneManager="*res://scripts/core/scene_manager.gd"
+BankrollManager="*res://scripts/managers/bankroll_manager.gd"
+DeckManager="*res://scripts/managers/deck_manager.gd"
+PressureManager="*res://scripts/managers/pressure_manager.gd"
+EntityManager="*res://scripts/managers/entity_manager.gd"
+DealerManager="*res://scripts/managers/dealer_manager.gd"
+BattleManager="*res://scripts/managers/battle_manager.gd"
+ShopManager="*res://scripts/managers/shop_manager.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
+window/size/resizable=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 config/icon="res://icon.svg"
 
 [physics]
@@ -23,3 +49,4 @@ config/icon="res://icon.svg"
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
