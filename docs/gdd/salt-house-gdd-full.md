@@ -258,25 +258,39 @@ Ils touchent des axes **spécifiques au système BJ** :
 
 Les Moon Cards sont des modificateurs **permanents pour toute la run** — elles boostent les valeurs fondamentales du jeu. Pas des effets ponctuels : des amplificateurs de style de jeu.
 
-**Symétrie des 4 phases :**
+**Grille 2×2 — Symétrie des 4 phases :**
 
-| Moon Card         | Levier           | Effet                                       |
-| ----------------- | ---------------- | ------------------------------------------- |
-| **First Quarter** | Pressure de base | +X à la Pressure plancher (permanent run)   |
-| **Last Quarter**  | Pressure par Hit | +X au gain de Pressure à chaque carte tirée |
-| **Full Moon**     | Salt gagné       | +X% au Salt volé par victoire (payout)      |
-| **New Moon**      | Salt misé        | +X% à la mise maximale autorisée            |
+|                | **Croissance** | **Sécurité** |
+|----------------|----------------|--------------|
+| **PRSR**       | Last Quarter   | First Quarter |
+| **Salt**       | Full Moon      | New Moon     |
 
-→ First + Last Quarter : tu construis ta Pressure plus vite et plus haut.
-→ Full + New Moon : tu monétises davantage ou tu joues plus gros.
+| Moon Card         | Levier              | Effet (niveau 1)                                        |
+|-------------------|---------------------|---------------------------------------------------------|
+| **First Quarter** | PRSR plancher       | PRSR de base = 1.25 au lieu de 1.00 (permanent run)     |
+| **Last Quarter**  | PRSR par Hit        | +0.25 PRSR par carte tirée (au lieu de +0.1)            |
+| **Full Moon**     | Salt volé           | +25% au Salt volé par victoire                          |
+| **New Moon**      | Salt perdu          | Récupère 30% de la mise sur une main perdue ou bustée   |
 
-Un joueur "safe" prend Full Moon. Un joueur "high stakes" prend New Moon.
+**Lecture de la grille :**
+- **First + Last Quarter** → tu construis ta PRSR plus vite et plus haut (axe offensif)
+- **Full + New Moon** → tu gagnes plus sur les victoires, tu perds moins sur les défaites (axe économique)
+
+**Combos notables :**
+- Last Quarter + Full Moon = snowball agressif — PRSR explose, payout suit
+- First Quarter + New Moon = run solide et safe — plancher haut, pertes amorties
+- Last Quarter + New Moon = high risk / high survive — tu prends des risques mais tu t'en remets
+- First Quarter + Full Moon = propre et rentable — gains réguliers sans nécessiter de hitter beaucoup
+
+**Pas de plafond de mise.** Le joueur peut all-in à tout moment — c'est sa prise de risque. New Moon n'affecte pas la mise maximale (supprimé), il agit sur la récupération en cas de perte.
 
 **Lunes spéciales (post-launch / Légendaires) :**
 - **Blood Moon**, **Super Moon**, **Eclipse**… — effets plus puissants, rares, potentiellement risqués.
 - Le système de rareté se construit naturellement : 4 phases de base = Commun, lunes spéciales = Rare/Légendaire.
 
 **Acquisition :** Via Nacre Shell (choix parmi 2-3) ou au Shop.
+
+> ⚠️ BALANCING — Valeurs niveau 1 à affiner en test : First Quarter +0.25 plancher / Last Quarter +0.25/hit / Full Moon +25% / New Moon 30% récupération.
 
 > ❓ DÉCISION — Nombre de Moon Cards équipables simultanément ?
 
@@ -558,9 +572,11 @@ IDLE
 - [ ] Mutations : aléatoires ou fixes par Depth ?
 - [ ] Nombre de Mutations actives simultanément par Depth
 - [ ] Nombre de slots Echoes maximum
-- [x] Moon Cards : 4 phases de base (First/Last Quarter → Pressure, Full/New Moon → Salt) + lunes spéciales post-launch
+- [x] Moon Cards : grille 2×2 — PRSR (Last Quarter croissance / First Quarter sécurité) × Salt (Full Moon croissance / New Moon sécurité)
+- [x] New Moon : récupère 30% de la mise sur perte (pas un % max bet — plafond de mise supprimé)
+- [x] Pas de plafond de mise — le joueur peut all-in à tout moment
 - [ ] Nombre de Moon Cards équipables simultanément
-- [ ] Valeurs exactes des bonus Moon Cards (⚠️ BALANCING)
+- [ ] Valeurs exactes des bonus Moon Cards (⚠️ BALANCING — provisoire : FQ +0.25 plancher / LQ +0.25/hit / FM +25% / NM 30%)
 - [ ] Shells utilisables en combat ou uniquement hors combat ?
 - [ ] Limite de Shells stockés ?
 - [ ] Condition de défaite alternative (nombre de mains max ?)
