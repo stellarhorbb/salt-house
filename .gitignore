@@ -1,0 +1,19 @@
+# Godot 4 specific
+.godot/
+*.uid
+
+# Godot exports
+export/
+
+# Import cache
+.import/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Builds
+builds/
+
+# Logs
+*.log
