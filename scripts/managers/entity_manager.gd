@@ -47,9 +47,11 @@ func _advance_zone() -> void:
 	var next_number := current_zone_number + 1
 	var next_stats: ZoneStatsResource = PROGRESSION.get_stats(next_number)
 	if next_stats == null:
+		await get_tree().create_timer(GameRules.HAND_RESULT_DISPLAY_DURATION).timeout
 		SignalBus.run_ended.emit(true)
 		return
 	_pending_zone = next_number
+	await get_tree().create_timer(GameRules.HAND_RESULT_DISPLAY_DURATION).timeout
 	SceneManager.go_to(&"reward")
 
 
