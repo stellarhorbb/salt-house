@@ -49,18 +49,18 @@ Références émotionnelles : Hollow Knight, Dark Souls / Elden Ring, The Leftov
 
 ### 0.5 Terminologie
 
-| Terme générique       | Terme Salt House |
-| --------------------- | ---------------- |
-| Run                   | Dive             |
-| Niveau                | Depth            |
-| Round                 | Zone             |
-| Monnaie               | Salt             |
-| Relique passive       | Echo             |
-| Modificateur de règle | Moon Card        |
-| Consommable           | Shell            |
-| Hub inter-runs        | The Shore        |
-| Boutique              | Shop             |
-| Ennemi                | Entité           |
+| Terme générique       | Terme Salt House | Terme FR      |
+| --------------------- | ---------------- | ------------- |
+| Run                   | Dive             | Plongée       |
+| Niveau                | Depth            | Niveau        |
+| Round                 | Zone             | Zone          |
+| Monnaie               | Salt             | Sel           |
+| Relique passive       | Echo             | Echo          |
+| Modificateur de règle | Moon Card        | Carte lunaire |
+| Consommable           | Shell            | Coquillage    |
+| Hub inter-runs        | The Shore        | La plage      |
+| Boutique              | Shop             | Magasin       |
+| Ennemi                | Entity           | Entité        |
 
 ---
 
@@ -143,6 +143,16 @@ Chaque famille a son propre thème de Moon Cards associé (voir section 4.2).
 - Le deck se construit au fil du run via le Shop et les Shells.
 - Le joueur peut retirer des cartes (via Broken Shell) pour affiner sa composition.
 
+### 2.4 Visibilité du Deck
+
+**Le deck restant est visible en permanence pendant le combat.**
+
+Le joueur peut consulter à tout moment la liste des cartes encore dans le deck (pas encore tirées). Ce n'est pas de la triche — c'est de la lisibilité.
+
+Justification : avec des cartes spéciales, des doublons ajoutés au Shop, des cartes retirées via Broken Shell, la composition du deck est impossible à mémoriser. Cacher cette information créerait de la frustration gratuite plutôt que de la tension intéressante. La tension dans Salt House vient de la mise, de la PRSR et du salt pool de l'entity — pas de l'incertitude sur le deck.
+
+Conséquence de design : le joueur peut faire des décisions tactiques informées sur le hit/stand en fonction des cartes restantes. C'est une profondeur supplémentaire, pas un raccourci.
+
 ---
 
 ## 3. Les Mécaniques Centrales
@@ -223,6 +233,29 @@ Le Salt est **l'unique ressource** du jeu. Il remplace simultanément :
 **Principe de balancing :**
 Un joueur correct accumule naturellement. Un joueur qui bust souvent s'appauvrit. Pas de mécanisme de soin/récupération d'HP — la seule "défense" est de ne pas perdre sa mise.
 
+**Règle de progression des Salt Pools — "One-Shot impossible" :**
+
+> Le Salt Pool de chaque entité doit être supérieur au Salt maximum qu'un joueur pourrait accumuler en gagnant parfaitement toutes les zones précédentes.
+
+Formule : `pool[N] > salt_départ + pool[1] + pool[2] + ... + pool[N-1]`
+
+Conséquence : même un all-in ne suffit pas à effacer la zone suivante en une seule main — le joueur est structurellement obligé de jouer plusieurs mains, d'accumuler de la PRSR, et d'investir dans des Echoes pour rester compétitif.
+
+C'est le même principe que Balatro : chaque palier dépasse la somme de tout ce qui précède, créant une courbe de puissance quasi-exponentielle.
+
+Exemple de courbe respectant la règle (salt départ = 100) :
+
+| Zone | Pool entité | Salt max joueur après |
+|------|-------------|----------------------|
+| 1    | 100         | 200                  |
+| 2    | 250         | 450                  |
+| 3    | 500         | 950                  |
+| 4    | 1 000       | 1 950                |
+| 5    | 2 000       | 3 950                |
+| 6    | 4 000       | 7 950                |
+
+Note : la règle s'applique à PRSR=1.0 (base). Avec PRSR élevée, le joueur vole plus par main — les Echoes et Moon Cards sont le levier conçu pour bridger cet écart, pas le salt brut.
+
 ---
 
 ## 4. Les Outils du Joueur
@@ -265,12 +298,12 @@ Les Moon Cards sont des modificateurs **permanents pour toute la run** — elles
 | **PRSR**       | Last Quarter   | First Quarter |
 | **Salt**       | Full Moon      | New Moon     |
 
-| Moon Card         | Levier              | Effet (niveau 1)                                        |
-|-------------------|---------------------|---------------------------------------------------------|
-| **First Quarter** | PRSR plancher       | PRSR de base = 1.25 au lieu de 1.00 (permanent run)     |
-| **Last Quarter**  | PRSR par Hit        | +0.25 PRSR par carte tirée (au lieu de +0.1)            |
-| **Full Moon**     | Salt volé           | +25% au Salt volé par victoire                          |
-| **New Moon**      | Salt perdu          | Récupère 30% de la mise sur une main perdue ou bustée   |
+| Moon Card         | Levier       | Effet (niveau 1)                                        |
+| ----------------- | ------------ | ------------------------------------------------------- |
+| **First Quarter** | base PRSR    | PRSR de base = 1.25 au lieu de 1.00 (permanent run)     |
+| **Last Quarter**  | PRSR per Hit | +0.2 PRSR par carte tirée (au lieu de +0.1)             |
+| **Full Moon**     | Salt volé    | +10% au Salt volé par victoire                          |
+| **New Moon**      | Salt perdu   | Récupère 5% de la mise sur une main perdue (bust exclu) |
 
 **Lecture de la grille :**
 - **First + Last Quarter** → tu construis ta PRSR plus vite et plus haut (axe offensif)
@@ -294,7 +327,58 @@ Les Moon Cards sont des modificateurs **permanents pour toute la run** — elles
 
 > ❓ DÉCISION — Nombre de Moon Cards équipables simultanément ?
 
-### 4.3 Les Shells (Consommables)
+### 4.3 Les Bet Buttons
+
+Les Bet Buttons sont les boutons de mise du joueur — à la fois interface et **objet de build roguelite**.
+
+#### Structure
+
+- **5 slots au total** : 4 slots personnalisables + 1 slot ALL-IN épinglé (toujours présent, ne peut pas être retiré)
+- Le slot ALL-IN est la soupape de secours — sans lui, un joueur à faible Salt pourrait se retrouver bloqué
+
+#### Buttons de départ (par classe)
+
+Chaque classe démarre avec son propre panier de 4 buttons. Exemples :
+- *Classe standard* : 10% / 25% / 50% / 75%
+- *Classe agressive* : 25% / 50% / 75% / 99%
+- *Classe conservatrice* : 5% / 10% / 25% / 50%
+
+#### Button Packs
+
+Achetés au Shop, les Button Packs permettent de remplacer un button existant (hors ALL-IN) par un button spécial.
+
+**Buttons à valeur spéciale :**
+
+| Button | Effet |
+|---|---|
+| **33% Button** | Mise exactement 1/3 du Salt |
+| **99% Button** | Mise 99% du Salt — garde 1% en réserve |
+| **Flat 10 Button** | Mise fixe de 10 Salt, indépendamment du total |
+| **Mirror Button** | Mise = Salt pool de l'Entité ÷ 10 (arrondi) |
+
+**Buttons à effet spécial :**
+
+| Button | Effet |
+|---|---|
+| **Salt Button** | 10% de mise, mais +5% Salt bonus si la main est gagnée |
+| **Crescendo Button** | Mise = mise précédente × 1.5 (démarre à 10% au premier tour) |
+| **Minimum Button** | Mise fixe à 1 Salt — synergise avec des Echoes qui amplifient les petites mises |
+| **Gambler's Button** | 50% de mise, mais PRSR +0.3 si gagné, -0.1 si perdu |
+| **Tide Button** | Mise proportionnelle au Salt pool restant de l'Entité — monte en fin de combat |
+
+#### Acquisition
+
+Via **Button Packs** achetés au Shop.
+
+> ❓ DÉCISION — Peut-on avoir plusieurs fois le même button dans ses slots ?
+
+> ❓ DÉCISION — Les Button Packs remplacent-ils ou s'ajoutent-ils (jusqu'au max de 4) ?
+
+> ⚠️ BALANCING — Noms définitifs, valeurs, et catalogue complet à affiner en test.
+
+---
+
+### 4.4 Les Shells (Consommables)
 
 Achetés au Shop, utilisés entre les combats (ou pendant ?) pour modifier le deck ou l'équipement.
 
@@ -346,15 +430,15 @@ L'Entité n'a pas de HP — elle a un **Salt pool**. C'est à la fois sa vie et 
 
 La progression est découpée en zones thématiques, chacune contenant plusieurs Depths.
 
-| Zone | Depths | Ambiance |
-|---|---|---|
-| The Surface | 1–4 | Lumineux, introductif |
-| Sunlight Depths | 5–8 | Calme mais la pression monte |
-| Twilight Depths | 9–12 | Obscurité croissante |
-| Midnight Depths | 13–16 | Noir, hostile |
-| Abyssal Depths | 17–20 | Étrange, cosmique |
-| Hadal Depths | 21–24 | Extrême, quasi-incompréhensible |
-| The Abyss | 25+ | Infini, scaling exponentiel |
+| Zone            | Depths | Ambiance                        |
+| --------------- | ------ | ------------------------------- |
+| The Surface     | 1–4    | Lumineux, introductif           |
+| Sunlight Depths | 5–8    | Calme mais la pression monte    |
+| Twilight Depths | 9–12   | Obscurité croissante            |
+| Midnight Depths | 13–16  | Noir, hostile                   |
+| Abyssal Depths  | 17–20  | Étrange, cosmique               |
+| Hadal Depths    | 21–24  | Extrême, quasi-incompréhensible |
+| The Abyss       | 25+    | Infini, scaling exponentiel     |
 
 > ⚠️ BALANCING — Table complète Salt pool Entité / composition deck dealer / nombre de mains nécessaires par Depth à définir.
 
@@ -368,25 +452,60 @@ La progression est découpée en zones thématiques, chacune contenant plusieurs
 
 ### 5.3 Système de Mutations
 
-Chaque Entité peut avoir des **effets passifs** (Mutations) qui modifient les règles du combat.
+Les Mutations sont le **principal levier de difficulté** du jeu. Elles modifient les règles du combat de manière cumulative et rendent le skill-only structurellement insuffisant à partir d'un certain seuil.
 
-Exemples (non définitifs) :
+**Règle de déclenchement — tranchée :**
+- Une nouvelle Mutation aléatoire s'active **tous les 4 zones** (zone 4, 8, 12, 16, 20, 24)
+- Tirée aléatoirement depuis un pool global de Mutations
+- Elle reste active pour tout le reste de la run
+- À zone 24 : 6 Mutations actives simultanément
 
-| Rareté | Nom | Effet |
+**Principe de design :**
+Chaque Mutation est gérable seule. C'est leur **accumulation et leurs synergies** qui rendent la run progressivement impossible sans Echoes. Le joueur doit choisir ses Echoes en anticipation des Mutations qu'il a déjà — et de celles qu'il risque de croiser.
+
+**Synergies volontaires — exemples :**
+
+| Mutation A | Mutation B | Effet combiné |
 |---|---|---|
-| Commun | Cuirasse | "Si le dealer bust, il ne prend que 50% des dégâts" |
-| Commun | Pression Basse | "Si tu mises moins de X Salt, le dealer inflige −10% dégâts" |
-| Peu commun | Distorsion | "Les paires dans ta main comptent comme −1 chacune" |
-| Peu commun | Contre-Courant | "Si tu stands en dessous de 16, perte de mise ×1.5" |
-| Rare | Voile Noir | "L'Entité ne révèle pas sa première carte — tu joues sans information sur son jeu" |
-| Rare | Marée Inversée | "21 exact → dégâts normaux (pas de critique)" |
-| Épique | Siphon | "Chaque main gagnée → l'Entité récupère X Salt dans son pool" |
+| Marée Noire (bust = ×2) | Contre-Courant (stand < 18 = perte) | Obligation de viser 18-21 exactement — bust catastrophique |
+| Siphon (entité récupère au win) | Cuirasse (bust = 50% dégâts) | L'entité est quasi-unkillable sans PRSR élevée |
+| Marée Basse (blind montante) | Marée Noire (bust = ×2) | Pression économique + punition maximale du bust |
 
-> ❓ DÉCISION — Les Mutations sont-elles tirées aléatoirement par Depth, ou assignées fixement par zone ?
+**Catalogue — premier jet (objectif démo : 15 Mutations) :**
 
-> ❓ DÉCISION — Nombre de Mutations actives simultanément par Depth ? (Suggestion issue de l'ancien GDD : 0 au début, +1 tous les 4 Depths)
+*Catégorie A — Punition du bust :*
+| Nom | Effet |
+|---|---|
+| Marée Noire | Bust → perd `2× mise` au lieu de `1×` |
+| Abîme | Bust → l'Entité récupère `20%` de son pool |
+| Fond Marin | Bust → PRSR réinitialisée à 1.0 |
 
-> ⚠️ BALANCING — Catalogue complet des Mutations à concevoir. Objectif démo : 10-15 Mutations.
+*Catégorie B — Punition du stand :*
+| Nom | Effet |
+|---|---|
+| Contre-Courant | Stand en dessous de 18 → mise perdue même en cas de victoire |
+| Voile de Sel | Stand en dessous de 19 → dégâts réduits de 50% |
+
+*Catégorie C — Résistance de l'Entité :*
+| Nom | Effet |
+|---|---|
+| Cuirasse | L'Entité absorbe les 200 premiers Salt de dégâts par main |
+| Siphon | Chaque main gagnée → l'Entité récupère `10%` de son pool |
+| Carapace | Blackjack naturel → dégâts normaux (pas de ×1.5) |
+
+*Catégorie D — Pression économique :*
+| Nom | Effet |
+|---|---|
+| Marée Basse | Mise minimum = `15%` du salt actuel du joueur |
+| Taxe Abyssale | Chaque main coûte `3%` du salt du joueur avant distribution |
+
+*Catégorie E — Information cachée :*
+| Nom | Effet |
+|---|---|
+| Voile Noir | La carte visible du dealer est retournée face cachée — le joueur joue à l'aveugle |
+| Brouillard | Le score du dealer n'est pas affiché pendant le jeu du joueur |
+
+> ⚠️ BALANCING — Valeurs exactes à calibrer en test. L'objectif est que 3 Mutations actives rendent la run difficile sans Echoes, et que 5+ la rendent quasi-impossible.
 
 ---
 
@@ -566,14 +685,14 @@ IDLE
 - [ ] Mise minimum par main
 - [x] PRSR : accumulation sur tout le combat, reset entre chaque zone
 - [ ] Push (égalité) : Pressure conservée ou réinitialisée ? (probablement conservée, cohérent avec l'accumulation)
-- [ ] Salt de départ
+- [x] Salt de départ — 100 (référence pour la courbe de progression)
 - [ ] Seuil du dealer (17 classique, 21, ou variable)
 - [ ] Deck du dealer : visible ou opaque pour le joueur ?
-- [ ] Mutations : aléatoires ou fixes par Depth ?
-- [ ] Nombre de Mutations actives simultanément par Depth
+- [x] Mutations : aléatoires, tirées d'un pool global, +1 tous les 4 zones (zone 4, 8, 12...)
+- [x] Nombre de Mutations actives simultanément : jusqu'à 6 à zone 24
 - [ ] Nombre de slots Echoes maximum
 - [x] Moon Cards : grille 2×2 — PRSR (Last Quarter croissance / First Quarter sécurité) × Salt (Full Moon croissance / New Moon sécurité)
-- [x] New Moon : récupère 30% de la mise sur perte (pas un % max bet — plafond de mise supprimé)
+- [x] New Moon : récupère X% de la mise sur perte **contre le dealer uniquement** — bust non couvert (évite l'invulnérabilité sur all-in, renforce la logique stand conservateur)
 - [x] Pas de plafond de mise — le joueur peut all-in à tout moment
 - [ ] Nombre de Moon Cards équipables simultanément
 - [ ] Valeurs exactes des bonus Moon Cards (⚠️ BALANCING — provisoire : FQ +0.25 plancher / LQ +0.25/hit / FM +25% / NM 30%)
