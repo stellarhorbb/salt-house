@@ -34,7 +34,7 @@ func receive_hole_card(card: CardResource) -> void:
 func play_turn() -> void:
 	# Dealer draws until reaching the stand threshold
 	while score < GameRules.DEALER_STAND_THRESHOLD:
-		var card: CardResource = DeckManager.draw()
+		var card: CardResource = EntityDeckManager.draw()
 		if card == null:
 			break
 		receive_card(card)
