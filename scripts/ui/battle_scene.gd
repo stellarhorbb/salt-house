@@ -28,11 +28,13 @@ const CardVisualScene := preload("res://scenes/battle/hand/card_visual.tscn")
 
 # Preparation layer
 @onready var preparation_layer: VBoxContainer = $Content/PreparationLayer
-@onready var bet_button_10: Button   = $Content/PreparationLayer/BetButtons/BetButton10
-@onready var bet_button_20: Button   = $Content/PreparationLayer/BetButtons/BetButton20
-@onready var bet_button_50: Button   = $Content/PreparationLayer/BetButtons/BetButton50
-@onready var bet_button_100: Button  = $Content/PreparationLayer/BetButtons/BetButton100
-@onready var deal_button: Button     = $Content/PreparationLayer/DealButton
+@onready var bet_button_10pct: Button   = $Content/PreparationLayer/BetButtons/BetButton10pct
+@onready var bet_button_25pct: Button   = $Content/PreparationLayer/BetButtons/BetButton25pct
+@onready var bet_button_50pct: Button   = $Content/PreparationLayer/BetButtons/BetButton50pct
+@onready var bet_button_75pct: Button   = $Content/PreparationLayer/BetButtons/BetButton75pct
+@onready var bet_button_allin: Button   = $Content/PreparationLayer/BetButtons/BetButtonAllIn
+@onready var bet_button_clear: Button   = $Content/PreparationLayer/BetButtons/BetButtonClear
+@onready var deal_button: Button        = $Content/PreparationLayer/DealButton
 
 # Play layer
 @onready var play_layer: Control             = $Content/PlayLayer
@@ -55,6 +57,10 @@ const CardVisualScene := preload("res://scenes/battle/hand/card_visual.tscn")
 
 var _current_bet: int = 0
 var _turn_count: int = 0
+var _is_resolving: bool = false
+var _cards_dealt: int = 0          # compteur pour le stagger d'animation
+var _hole_card_token: CardVisual = null  # référence au token caché du dealer
+var _hole_revealed: bool = false   # true une fois la hole card retournée
 
 
 func _ready() -> void:
@@ -66,6 +72,9 @@ func _ready() -> void:
 	# Init de test si aucun run n'est actif (scène lancée directement)
 	if not GameManager.is_run_active:
 		GameManager.start_run()
+	# Fallback : si lancé directement depuis l'éditeur sans passer par main.tscn
+	if SceneManager._scene_container == null:
+		SceneManager.init(get_parent(), self)
 
 	# Signaux entrants
 	SignalBus.salt_changed.connect(_on_salt_changed)
@@ -75,15 +84,19 @@ func _ready() -> void:
 	SignalBus.hand_started.connect(_on_hand_started)
 	SignalBus.card_drawn.connect(_on_card_drawn)
 	SignalBus.dealer_card_drawn.connect(_on_dealer_card_drawn)
+	SignalBus.dealer_hole_dealt.connect(_on_dealer_hole_dealt)
+	SignalBus.dealer_card_revealed.connect(_on_dealer_card_revealed)
 	SignalBus.hand_resolved.connect(_on_hand_resolved)
 	SignalBus.run_ended.connect(_on_run_ended)
 	restart_button.pressed.connect(_on_restart_pressed)
 
 	# Boutons de mise
-	bet_button_10.pressed.connect(_on_bet_button_pressed.bind(10))
-	bet_button_20.pressed.connect(_on_bet_button_pressed.bind(20))
-	bet_button_50.pressed.connect(_on_bet_button_pressed.bind(50))
-	bet_button_100.pressed.connect(_on_bet_button_pressed.bind(100))
+	bet_button_10pct.pressed.connect(_on_bet_percent_pressed.bind(0.10))
+	bet_button_25pct.pressed.connect(_on_bet_percent_pressed.bind(0.25))
+	bet_button_50pct.pressed.connect(_on_bet_percent_pressed.bind(0.50))
+	bet_button_75pct.pressed.connect(_on_bet_percent_pressed.bind(0.75))
+	bet_button_allin.pressed.connect(_on_bet_percent_pressed.bind(1.0))
+	bet_button_clear.pressed.connect(_on_bet_percent_pressed.bind(0.0))
 	deal_button.pressed.connect(_on_deal_pressed)
 
 	# Boutons de jeu
@@ -91,6 +104,9 @@ func _ready() -> void:
 	stand_button.pressed.connect(_on_stand_pressed)
 
 	_refresh_zone_labels()
+	entity_salt_label.text = str(EntityManager.salt_pool)
+	entity_progress_bar.value = 100.0
+	salt_amount_label.text = str(BankrollManager.salt)
 	_show_preparation()
 
 
@@ -123,22 +139,18 @@ func _show_play() -> void:
 
 # ── Mise ───────────────────────────────────────────────────────────────────────
 
-func _on_bet_button_pressed(amount: int) -> void:
-	if not BankrollManager.can_afford(_current_bet + amount):
-		return
-	_current_bet += amount
+func _on_bet_percent_pressed(percent: float) -> void:
+	_current_bet = int(BankrollManager.salt * percent)
 	_refresh_top_bar()
 
 
 func _refresh_top_bar() -> void:
 	salt_value_label.text = str(_current_bet)
-	entity_salt_label.text = str(EntityManager.salt_pool)
-	entity_progress_bar.value = float(EntityManager.salt_pool) / float(maxi(EntityManager.max_pool, 1)) * 100.0
 	turn_counter_label.text = "Turn " + str(_turn_count)
 
 
 func _on_deal_pressed() -> void:
-	if _current_bet <= 0:
+	if _current_bet <= 0 or _is_resolving:
 		return
 	_show_play()
 	await get_tree().process_frame
@@ -161,13 +173,19 @@ func _on_salt_changed(new_amount: int) -> void:
 	salt_amount_label.text = str(new_amount)
 
 
-func _on_entity_salt_changed(_new_amount: int) -> void:
-	_refresh_top_bar()
+func _on_entity_salt_changed(new_amount: int) -> void:
+	entity_salt_label.text = str(new_amount)
+	var target: float = float(new_amount) / float(maxi(EntityManager.max_pool, 1)) * 100.0
+	var tween := create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(entity_progress_bar, "value", target, 0.4)
 
 
 func _on_zone_changed(_zone_number: int) -> void:
 	_turn_count = 0
 	_refresh_zone_labels()
+	entity_salt_label.text = str(EntityManager.salt_pool)
+	entity_progress_bar.value = 100.0
+	salt_amount_label.text = str(BankrollManager.salt)
 	_refresh_top_bar()
 	_show_preparation()
 
@@ -177,6 +195,9 @@ func _on_pressure_changed(new_pressure: float) -> void:
 
 
 func _on_hand_started() -> void:
+	_cards_dealt = 0
+	_hole_card_token = null
+	_hole_revealed = false
 	_clear_hand(dealer_hand_container)
 	_clear_hand(player_hand_container)
 
@@ -188,15 +209,39 @@ func _on_card_drawn(card: CardResource) -> void:
 
 func _on_dealer_card_drawn(card: CardResource) -> void:
 	_add_card_to_hand(dealer_hand_container, card)
+	if _hole_revealed:
+		# Après révélation : score complet du dealer
+		_update_dealer_score(DealerManager.score)
+	else:
+		# Pendant le deal initial : n'afficher que la carte face up
+		var visible_value: int = GameRules.ACE_HIGH_VALUE if card.is_ace else card.value
+		_update_dealer_score(visible_value)
+
+
+func _on_dealer_hole_dealt() -> void:
+	var token := CardVisualScene.instantiate() as CardVisual
+	dealer_hand_container.add_child(token)
+	token.setup_hidden(_cards_dealt * 0.12)
+	_cards_dealt += 1
+	_hole_card_token = token
+	_reflow_hand(dealer_hand_container)
+
+
+func _on_dealer_card_revealed(card: CardResource) -> void:
+	_hole_revealed = true
+	if _hole_card_token != null:
+		_hole_card_token.reveal(card)
 	_update_dealer_score(DealerManager.score)
 
 
 func _on_hand_resolved(result: StringName, payout: int) -> void:
+	_is_resolving = true
 	_turn_count += 1
 	hit_button.disabled = true
 	stand_button.disabled = true
 	_show_result(result, payout)
 	await get_tree().create_timer(2.0).timeout
+	_is_resolving = false
 	result_label.visible = false
 	hit_button.disabled = false
 	stand_button.disabled = false
@@ -242,9 +287,10 @@ func _on_restart_pressed() -> void:
 # ── Helpers visuels ────────────────────────────────────────────────────────────
 
 func _add_card_to_hand(container: Control, card: CardResource) -> void:
-	var token := CardVisualScene.instantiate()
+	var token := CardVisualScene.instantiate() as CardVisual
 	container.add_child(token)
-	token.setup(card)
+	token.setup(card, _cards_dealt * 0.12)
+	_cards_dealt += 1
 	_reflow_hand(container)
 
 
@@ -262,26 +308,6 @@ func _reflow_hand(container: Control) -> void:
 
 	container.custom_minimum_size.x = total_width
 
-
-func _add_hidden_card_to_dealer() -> void:
-	# Jeton gris avec "?" pour la carte cachée du dealer
-	var token := CardVisualScene.instantiate()
-	dealer_hand_container.add_child(token)
-
-	var hidden_card := CardResource.new()
-	hidden_card.family = &"spades"
-	hidden_card.value = 0
-	hidden_card.display_name = "?"
-	token.setup(hidden_card)
-
-	var index := dealer_hand_container.get_child_count() - 1
-	token.position.x = index * (110 - card_overlap)
-	dealer_hand_container.custom_minimum_size.x = index * (110 - card_overlap) + 110
-
-
-func _reveal_dealer_hidden_card() -> void:
-	# À implémenter quand le dealer joue son tour
-	pass
 
 
 func _clear_hand(container: Control) -> void:

@@ -23,8 +23,9 @@ func _ready() -> void:
 	SignalBus.scene_change_requested.connect(_on_scene_change_requested)
 
 
-func init(container: Node) -> void:
+func init(container: Node, current_scene: Node = null) -> void:
 	_scene_container = container
+	_current_scene = current_scene
 
 
 func go_to(scene_key: StringName) -> void:

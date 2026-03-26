@@ -6,6 +6,7 @@ extends Node
 
 var hand: Array[CardResource] = []
 var score: int = 0
+var hole_card: CardResource = null
 
 
 func _ready() -> void:
@@ -15,9 +16,17 @@ func _ready() -> void:
 func reset_hand() -> void:
 	hand.clear()
 	score = 0
+	hole_card = null
 
 
 func receive_card(card: CardResource) -> void:
+	hand.append(card)
+	score = _calculate_score(hand)
+
+
+# Carte cachée — ajoutée à la main (score réel calculé) mais non révélée visuellement
+func receive_hole_card(card: CardResource) -> void:
+	hole_card = card
 	hand.append(card)
 	score = _calculate_score(hand)
 

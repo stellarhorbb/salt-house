@@ -236,33 +236,47 @@ grow_vertical = 0
 layout_mode = 2
 alignment = 1
 
-[node name="BetButton10" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=445995905]
-custom_minimum_size = Vector2(170, 75)
+[node name="BetButton10pct" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=445995905]
+custom_minimum_size = Vector2(120, 75)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
-text = "+10"
+text = "10%"
 
-[node name="BetButton20" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1261029711]
-custom_minimum_size = Vector2(170, 75)
+[node name="BetButton25pct" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1261029711]
+custom_minimum_size = Vector2(120, 75)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
-text = "+20"
+text = "25%"
 
-[node name="BetButton50" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=47761949]
-custom_minimum_size = Vector2(170, 75)
+[node name="BetButton50pct" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=47761949]
+custom_minimum_size = Vector2(120, 75)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
-text = "+50"
+text = "50%"
 
-[node name="BetButton100" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1114835532]
-custom_minimum_size = Vector2(170, 75)
+[node name="BetButton75pct" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1114835532]
+custom_minimum_size = Vector2(120, 75)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
-text = "+100"
+text = "75%"
+
+[node name="BetButtonAllIn" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1114835533]
+custom_minimum_size = Vector2(120, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "ALL IN"
+
+[node name="BetButtonClear" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1114835534]
+custom_minimum_size = Vector2(70, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 42
+text = "X"
 
 [node name="DealButton" type="Button" parent="Content/PreparationLayer" unique_id=1279093567]
 custom_minimum_size = Vector2(734, 75)

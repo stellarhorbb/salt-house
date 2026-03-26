@@ -25,9 +25,10 @@ signal player_stood()
 signal hand_resolved(result: StringName, payout: int)  # result: &"win" | &"lose" | &"push" | &"bust"
 
 # ── Combat — cards ─────────────────────────────────────────────────────────────
-signal card_drawn(card)           # CardResource — player card
-signal dealer_card_drawn(card)    # CardResource — dealer card (visible)
-signal dealer_card_revealed()     # dealer's hidden card flipped at resolution
+signal card_drawn(card)                  # CardResource — joueur
+signal dealer_card_drawn(card)           # CardResource — carte visible du dealer
+signal dealer_hole_dealt()               # carte cachée posée face down
+signal dealer_card_revealed(card)        # CardResource — hole card révélée au stand
 
 # ── Salt ───────────────────────────────────────────────────────────────────────
 signal salt_changed(new_amount: int)

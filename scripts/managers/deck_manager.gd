@@ -6,11 +6,13 @@ extends Node
 
 var _deck: Array[CardResource] = []
 var _discard: Array[CardResource] = []
+var _in_play: Array[CardResource] = []  # cartes actuellement sur la table
 
 
 func _ready() -> void:
 	SignalBus.run_started.connect(_on_run_started)
 	SignalBus.zone_changed.connect(_on_zone_changed)
+	SignalBus.hand_resolved.connect(_on_hand_resolved)
 
 
 # ── Build ──────────────────────────────────────────────────────────────────────
@@ -18,6 +20,7 @@ func _ready() -> void:
 func build_standard_deck() -> void:
 	_deck.clear()
 	_discard.clear()
+	_in_play.clear()
 
 	var families := [
 		CardResource.FAMILY_DIAMONDS,
@@ -64,18 +67,12 @@ func shuffle() -> void:
 
 func draw() -> CardResource:
 	if _deck.is_empty():
-		# ⚠️ DECISION — auto-reshuffle discard or block?
 		_reshuffle_discard()
-
 	if _deck.is_empty():
 		return null
-
 	var card: CardResource = _deck.pop_back()
+	_in_play.append(card)
 	return card
-
-
-func discard(card: CardResource) -> void:
-	_discard.append(card)
 
 
 func _reshuffle_discard() -> void:
@@ -96,3 +93,9 @@ func _on_run_started() -> void:
 
 func _on_zone_changed(_zone_number: int) -> void:
 	build_standard_deck()
+
+
+func _on_hand_resolved(_result: StringName, _payout: int) -> void:
+	# Toutes les cartes jouées retournent à la défausse
+	_discard.append_array(_in_play)
+	_in_play.clear()

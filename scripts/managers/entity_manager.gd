@@ -11,6 +11,7 @@ var salt_pool: int = 0
 var max_pool: int = 0
 var current_zone: ZoneStatsResource = null
 var current_zone_number: int = 1
+var _pending_zone: int = 0
 
 
 func _ready() -> void:
@@ -43,11 +44,19 @@ func steal(amount: int) -> int:
 
 func _advance_zone() -> void:
 	SignalBus.zone_completed.emit()
-	var next_stats: ZoneStatsResource = PROGRESSION.get_stats(current_zone_number + 1)
+	var next_number := current_zone_number + 1
+	var next_stats: ZoneStatsResource = PROGRESSION.get_stats(next_number)
 	if next_stats == null:
 		SignalBus.run_ended.emit(true)
 		return
-	load_zone(current_zone_number + 1)
+	_pending_zone = next_number
+	SceneManager.go_to(&"reward")
+
+
+# Appelé par ShopScene quand le joueur quitte le shop
+func proceed_to_next_zone() -> void:
+	load_zone(_pending_zone)
+	SceneManager.go_to(&"battle")
 	SignalBus.zone_changed.emit(current_zone_number)
 
 
