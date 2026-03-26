@@ -11,24 +11,48 @@ salt_pool = 100
 [sub_resource type="Resource" id="zone_02"]
 script = ExtResource("2")
 zone_number = 2
-zone_name = "The Shallows"
-salt_pool = 150
+zone_name = "The Surface"
+salt_pool = 250
 
 [sub_resource type="Resource" id="zone_03"]
 script = ExtResource("2")
 zone_number = 3
-zone_name = "The Deep"
-salt_pool = 250
-mutations = 1
+zone_name = "The Surface"
+salt_pool = 500
 
 [sub_resource type="Resource" id="zone_04"]
 script = ExtResource("2")
 zone_number = 4
-zone_name = "The Abyss"
-salt_pool = 350
-mutations = 2
+zone_name = "The Surface"
+salt_pool = 1000
 is_boss = true
+
+[sub_resource type="Resource" id="Resource_bqxn4"]
+script = ExtResource("2")
+zone_number = 5
+zone_name = "Sunlight Depths"
+salt_pool = 2000
+metadata/_custom_type_script = "uid://ujmmkus0fcxe"
+
+[sub_resource type="Resource" id="Resource_vhdlg"]
+script = ExtResource("2")
+zone_number = 6
+salt_pool = 4000
+metadata/_custom_type_script = "uid://ujmmkus0fcxe"
+
+[sub_resource type="Resource" id="Resource_ak1od"]
+script = ExtResource("2")
+zone_number = 7
+salt_pool = 8000
+metadata/_custom_type_script = "uid://ujmmkus0fcxe"
+
+[sub_resource type="Resource" id="Resource_lbqk2"]
+script = ExtResource("2")
+zone_number = 8
+salt_pool = 16000
+is_boss = true
+metadata/_custom_type_script = "uid://ujmmkus0fcxe"
 
 [resource]
 script = ExtResource("1")
-zones = Array[ExtResource("2")]([SubResource("zone_01"), SubResource("zone_02"), SubResource("zone_03"), SubResource("zone_04")])
+zones = Array[ExtResource("2")]([SubResource("zone_01"), SubResource("zone_02"), SubResource("zone_03"), SubResource("zone_04"), SubResource("Resource_bqxn4"), SubResource("Resource_vhdlg"), SubResource("Resource_ak1od"), SubResource("Resource_lbqk2")])
