@@ -3,9 +3,33 @@
 [ext_resource type="Script" uid="uid://gkp7dg7qpj3i" path="res://scripts/ui/battle_scene.gd" id="1"]
 [ext_resource type="FontFile" uid="uid://dmi17alnu3pan" path="res://assets/fonts/LondrinaSolid-Regular.ttf" id="2"]
 [ext_resource type="Material" uid="uid://cb7bqh6uene3y" path="res://vfx/materials/wave_top.tres" id="3"]
+[ext_resource type="Texture2D" uid="uid://cry5eegpfj1p2" path="res://assets/cards/backs/generic-back-icon.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://cny7d6eg3wuh2" path="res://assets/ui/icons/salt-icon-white.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://cya10peffrcxa" path="res://assets/ui/icons/pressure-yellow.png" id="6"]
 
 [sub_resource type="StyleBoxFlat" id="pb_fill"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="deal_normal"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="deal_pressed"]
+bg_color = Color(0.72, 0.72, 0.72, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="deal_hover"]
+bg_color = Color(0.88, 0.88, 0.88, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [node name="BattleScene" type="Control" unique_id=341472177]
 layout_mode = 3
@@ -73,26 +97,13 @@ offset_right = 346.0
 offset_bottom = 100.0
 grow_horizontal = 2
 
-[node name="EntityBarRow" type="HBoxContainer" parent="Content/TopBar/EntityBarContainer" unique_id=778990123]
+[node name="EntitySaltLabel" type="Label" parent="Content/TopBar/EntityBarContainer" unique_id=856980064]
 layout_mode = 2
-
-[node name="TurnCounterLabel" type="Label" parent="Content/TopBar/EntityBarContainer/EntityBarRow" unique_id=889101234]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 42
-text = "?"
-uppercase = true
-
-[node name="EntitySaltLabel" type="Label" parent="Content/TopBar/EntityBarContainer/EntityBarRow" unique_id=856980064]
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
 text = "500"
-horizontal_alignment = 2
+horizontal_alignment = 1
 uppercase = true
 
 [node name="EntityProgressBar" type="ProgressBar" parent="Content/TopBar/EntityBarContainer" unique_id=1891579949]
@@ -101,7 +112,7 @@ layout_mode = 2
 theme_override_styles/fill = SubResource("pb_fill")
 show_percentage = false
 
-[node name="SaltInfo" type="VBoxContainer" parent="Content/TopBar" unique_id=827727196]
+[node name="TurnDisplay" type="VBoxContainer" parent="Content/TopBar" unique_id=827727196]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -110,21 +121,21 @@ offset_left = -250.0
 offset_bottom = 130.0
 grow_horizontal = 0
 
-[node name="SaltTitleLabel" type="Label" parent="Content/TopBar/SaltInfo" unique_id=725799047]
+[node name="TurnTitleLabel" type="Label" parent="Content/TopBar/TurnDisplay" unique_id=725799047]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 32
-text = "SALT"
+text = "TURN"
 horizontal_alignment = 2
 uppercase = true
 
-[node name="SaltAmountLabel" type="Label" parent="Content/TopBar/SaltInfo" unique_id=1599905410]
+[node name="TurnCounterLabel" type="Label" parent="Content/TopBar/TurnDisplay" unique_id=889101234]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 56
-text = "100"
+text = "0"
 horizontal_alignment = 2
 uppercase = true
 
@@ -146,7 +157,20 @@ theme_override_constants/separation = 35
 [node name="SaltColumn" type="VBoxContainer" parent="Content/StakeDisplay" unique_id=1087140386]
 layout_mode = 2
 
-[node name="SaltLabel" type="Label" parent="Content/StakeDisplay/SaltColumn" unique_id=1533815895]
+[node name="SaltHeader" type="HBoxContainer" parent="Content/StakeDisplay/SaltColumn" unique_id=1533815895]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="SaltIcon" type="TextureRect" parent="Content/StakeDisplay/SaltColumn/SaltHeader" unique_id=1533815896]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SaltLabel" type="Label" parent="Content/StakeDisplay/SaltColumn/SaltHeader" unique_id=1533815897]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 41
@@ -193,7 +217,20 @@ uppercase = true
 [node name="PressureColumn" type="VBoxContainer" parent="Content/StakeDisplay" unique_id=1897115019]
 layout_mode = 2
 
-[node name="PressureLabel" type="Label" parent="Content/StakeDisplay/PressureColumn" unique_id=1615279710]
+[node name="PressureHeader" type="HBoxContainer" parent="Content/StakeDisplay/PressureColumn" unique_id=1615279710]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="PressureIcon" type="TextureRect" parent="Content/StakeDisplay/PressureColumn/PressureHeader" unique_id=1615279711]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PressureLabel" type="Label" parent="Content/StakeDisplay/PressureColumn/PressureHeader" unique_id=1615279712]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 41
@@ -237,53 +274,110 @@ layout_mode = 2
 alignment = 1
 
 [node name="BetButton10pct" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=445995905]
-custom_minimum_size = Vector2(120, 75)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
 text = "10%"
 
 [node name="BetButton25pct" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1261029711]
-custom_minimum_size = Vector2(120, 75)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
 text = "25%"
 
 [node name="BetButton50pct" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=47761949]
-custom_minimum_size = Vector2(120, 75)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
 text = "50%"
 
 [node name="BetButton75pct" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1114835532]
-custom_minimum_size = Vector2(120, 75)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
 text = "75%"
 
 [node name="BetButtonAllIn" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1114835533]
-custom_minimum_size = Vector2(120, 75)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
 text = "ALL IN"
 
-[node name="BetButtonClear" type="Button" parent="Content/PreparationLayer/BetButtons" unique_id=1114835534]
-custom_minimum_size = Vector2(70, 75)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 42
-text = "X"
-
 [node name="DealButton" type="Button" parent="Content/PreparationLayer" unique_id=1279093567]
 custom_minimum_size = Vector2(734, 75)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
-text = "DEAL"
+theme_override_styles/normal = SubResource("deal_normal")
+theme_override_styles/pressed = SubResource("deal_pressed")
+theme_override_styles/hover = SubResource("deal_hover")
+text = "STAKE"
+
+[node name="PlayerSaltDisplay" type="VBoxContainer" parent="Content" unique_id=900000004]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+offset_right = 260.0
+grow_vertical = 0
+
+[node name="PlayerSaltAmountLabel" type="Label" parent="Content/PlayerSaltDisplay" unique_id=900000006]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 76
+text = "100"
+uppercase = true
+
+[node name="PlayerSaltTitleLabel" type="Label" parent="Content/PlayerSaltDisplay" unique_id=900000005]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 28
+text = "YOUR SALT"
+uppercase = true
+
+[node name="DeckDisplay" type="HBoxContainer" parent="Content" unique_id=900000007]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -110.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="DeckCountLabel" type="Label" parent="Content/DeckDisplay" unique_id=900000008]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 56
+text = "52"
+vertical_alignment = 1
+uppercase = true
+
+[node name="DeckCardIcon" type="TextureRect" parent="Content/DeckDisplay" unique_id=900000009]
+custom_minimum_size = Vector2(50, 68)
+layout_mode = 2
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="PlayLayer" type="Control" parent="Content" unique_id=1066095209]
 visible = false
@@ -394,6 +488,14 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
 text = "STAND"
+
+[node name="DoubleButton" type="Button" parent="Content/PlayLayer/ActionButtons" unique_id=312847651]
+visible = false
+custom_minimum_size = Vector2(240, 75)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 36
+text = "DOUBLE"
 
 [node name="GameOverOverlay" type="Control" parent="." unique_id=994563227]
 visible = false

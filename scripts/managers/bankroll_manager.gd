@@ -12,6 +12,7 @@ func _ready() -> void:
 	SignalBus.run_started.connect(_on_run_started)
 	SignalBus.salt_stolen.connect(_on_salt_stolen)
 	SignalBus.bet_placed.connect(_on_bet_placed)
+	SignalBus.bet_increased.connect(_on_bet_increased)
 	SignalBus.hand_resolved.connect(_on_hand_resolved)
 
 
@@ -43,6 +44,11 @@ func _on_run_started() -> void:
 func _on_bet_placed(amount: int) -> void:
 	_current_bet = amount
 	remove(amount)
+
+
+func _on_bet_increased(extra: int) -> void:
+	_current_bet += extra
+	remove(extra)
 
 
 func _on_hand_resolved(result: StringName, _payout: int) -> void:

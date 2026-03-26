@@ -14,6 +14,7 @@ func _ready() -> void:
 	SignalBus.bet_placed.connect(_on_bet_placed)
 	SignalBus.player_hit.connect(_on_player_hit)
 	SignalBus.player_stood.connect(_on_player_stood)
+	SignalBus.player_doubled.connect(_on_player_doubled)
 
 
 func start_hand(bet: int) -> void:
@@ -47,14 +48,14 @@ func _deal_to_player() -> void:
 
 
 func _deal_to_dealer_visible() -> void:
-	var card: CardResource = DeckManager.draw()
+	var card: CardResource = EntityDeckManager.draw()
 	if card:
 		DealerManager.receive_card(card)
 		SignalBus.dealer_card_drawn.emit(card)
 
 
 func _deal_to_dealer_hole() -> void:
-	var card: CardResource = DeckManager.draw()
+	var card: CardResource = EntityDeckManager.draw()
 	if card:
 		DealerManager.receive_hole_card(card)
 		SignalBus.dealer_hole_dealt.emit()
@@ -120,4 +121,16 @@ func _on_player_hit() -> void:
 func _on_player_stood() -> void:
 	if not _is_player_turn:
 		return
+	_resolve_hand()
+
+
+func _on_player_doubled() -> void:
+	if not _is_player_turn or player_hand.size() != 2:
+		return
+	# Extra = mise initiale, plafonné au salt restant du joueur
+	var extra: int = mini(current_bet, BankrollManager.salt)
+	current_bet += extra
+	SignalBus.bet_increased.emit(extra)
+	# Une seule carte, puis résolution directe
+	_deal_to_player()
 	_resolve_hand()

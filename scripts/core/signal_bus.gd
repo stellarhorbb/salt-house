@@ -22,6 +22,8 @@ signal hand_started()
 signal bet_placed(amount: int)
 signal player_hit()
 signal player_stood()
+signal player_doubled()
+signal bet_increased(extra: int)  # mise augmentée par un double
 signal hand_resolved(result: StringName, payout: int)  # result: &"win" | &"lose" | &"push" | &"bust"
 
 # ── Combat — cards ─────────────────────────────────────────────────────────────
