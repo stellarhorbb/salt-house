@@ -21,14 +21,13 @@ Ils touchent des axes **spécifiques au système BJ** :
 - **Cas limites** — push, 21 tiré, all-in
 - **Tempo** — vitesse de zone, nombre de turns (ex: zone vidée en ≤5 turns → bonus Salt)
 - **PRSR / risque** — amplifier les hits, les mains longues
+- **Gold Shells** — effets passifs basés sur le stock de Gold Shells, génération en combat, conversions Gold Shells ↔ Salt / PRSR
 
 **Ce que les Echoes ne font PAS :** modifier les valeurs numériques des cartes directement (trop proche de Balatro, crée de l'imprévisibilité négative dans un système où 21 est le plafond fixe).
 
-**Slots :** Le joueur peut équiper jusqu'à X Echoes simultanément.
+**Slots :** Le joueur peut équiper jusqu'à **5 Echoes simultanément**. Ce maximum peut être modifié par certains Echoes, classes ou effets spéciaux.
 
-> ❓ DÉCISION — Nombre de slots d'Echoes maximum ? (Suggestion : 5)
-
-**Acquisition :** Via Dark Shell (choix parmi 3) ou directement au Shop.
+**Acquisition :** Via Pack d'Echoes au Shop (choix parmi 3-5) ou en achat unitaire direct au Shop.
 
 > ⚠️ BALANCING — Catalogue d'Echoes complet à concevoir. Objectif démo : 25 Echoes distincts.
 
@@ -67,9 +66,9 @@ Les Moon Cards sont des modificateurs **permanents pour toute la run** — elles
 **Lunes spéciales (post-launch / Légendaires) :**
 - **Blood Moon**, **Super Moon**, **Eclipse**… — effets plus puissants, rares, potentiellement risqués.
 
-**Acquisition :** Via Nacre Shell (choix parmi 2-3) ou au Shop.
+**Acquisition :** Via Pack de Moon Cards au Shop (présente 2 cartes, en choisir 1) ou en achat unitaire direct au Shop.
 
-> ❓ DÉCISION — Nombre de Moon Cards équipables simultanément ?
+**Consommation immédiate :** une Moon Card acquise est appliquée instantanément et de façon permanente pour la run. Il n'y a pas de slots d'équipement — les effets s'accumulent au fil des achats.
 
 > ⚠️ BALANCING — Valeurs niveau 1 : FQ +0.25 plancher / LQ +0.25/hit / FM +25% / NM 30% récupération.
 
@@ -93,7 +92,9 @@ Chaque classe démarre avec son propre panier de 4 buttons. Exemples :
 
 ### Button Packs
 
-Achetés au Shop, les Button Packs permettent de remplacer un button existant (hors ALL-IN) par un button spécial.
+Achetés au Shop, les Button Packs permettent d'ajouter ou remplacer un button dans les slots personnalisables (hors ALL-IN) :
+- **Slot occupé** → le nouveau button remplace l'ancien (au choix du joueur)
+- **Slot vide** → le button s'ajoute directement (possible si une classe démarre avec moins de 4 buttons)
 
 **Buttons à valeur spéciale :**
 
@@ -118,25 +119,25 @@ Achetés au Shop, les Button Packs permettent de remplacer un button existant (h
 
 > ❓ DÉCISION — Peut-on avoir plusieurs fois le même button dans ses slots ?
 
-> ❓ DÉCISION — Les Button Packs remplacent-ils ou s'ajoutent-ils (jusqu'au max de 4) ?
-
 ### Acquisition
 
 Via **Button Packs** achetés au Shop, ou comme récompense de zone rare.
 
 ---
 
-## 4.4 Les Shells (Consommables)
+## 4.4 Les Boosters (Packs)
 
-Achetés au Shop, utilisés entre les combats (ou pendant ?) pour modifier le deck ou l'équipement.
+Achetés au Shop en **Gold Shells**, les Boosters sont des packs au contenu aléatoire. Après achat, le joueur choisit parmi les propositions du pack. Il n'y a pas de stock — les boosters sont ouverts immédiatement à l'achat.
 
-| Shell | Effet |
-|---|---|
-| **Dark Shell** | Ajoute un Echo au choix parmi 3 |
-| **Striped Shell** | Ajoute une carte au deck (famille ou valeur au choix) |
-| **Nacre Shell** | Choisir une Moon Card parmi 2-3 |
-| **Broken Shell** | Retirer une carte du deck (nettoyer les grosses valeurs risquées) |
+| Booster | Contenu | Choix |
+|---|---|---|
+| **Pack d'Echoes** | 3-5 Echoes aléatoires | Choisir 1 |
+| **Pack de Moon Cards** | 2 Moon Cards aléatoires | Choisir 1, appliquée immédiatement |
+| **Pack de Cartes** | Cartes simples ou spéciales | Choisir 1 à ajouter au deck |
+| **Pack de Bet Buttons** | 1 Bet Button aléatoire | Ajouté directement aux slots |
 
-> ❓ DÉCISION — Les Shells sont-ils utilisables uniquement entre les combats (au Shop), ou aussi pendant un combat ?
+**Cartes simples vs cartes spéciales :**
+- *Carte simple* : copie d'une carte standard (valeur + famille) ajoutée au deck
+- *Carte spéciale* : carte avec un effet en combat (familles et effets à définir)
 
-> ❓ DÉCISION — Y a-t-il une limite au nombre de Shells stockés ?
+> ❓ DÉCISION — Catalogue des cartes spéciales (familles d'effets à concevoir, session dédiée).

@@ -2,20 +2,22 @@
 
 ## 1.1 Macro-Structure (La Dive)
 
-La Dive est divisée en **Depths**, chacun contenant un combat contre une Entité.
+La Dive (Plongée) est divisée en **Depths** (profondeurs), chacun contenant 4 zones de jeu contre une Entité.
 
 ```
-Arriver sur un Depth
+Arriver sur une Depth
   → Choisir sa mise (X Salt)
-    → Tirer ses cartes (Hit ou Stand)
+    → Tirer ses cartes (Hit, Stand ou Double)
       → Dealer révèle son jeu
         → Résultat :
-            Gagné → Dégâts à l'Entité = Mise × PRSR + récupère mise
-            Perdu / Bust → Perte de la mise (+ effets éventuels)
-            21 exact → Dégâts critiques × 2
+            Gagné        → Entité perd Mise × PRSR / Joueur récupère sa mise
+            21 au tirage → Entité perd (Mise × PRSR) × 1.5 / Joueur récupère sa mise
+            Blackjack    → Entité perd (Mise × PRSR) × 2 / Joueur récupère sa mise (2 cartes = 21)
+            Perdu / Bust → Perte de la mise
+            Push         → Mise remboursée, PRSR conservée
   → Répéter jusqu'à mort de l'Entité ou 0 Salt
-→ Récompense post-combat
-→ Shop
+→ Récompense post-combat (Salt bonus OU boost PRSR de départ)
+→ Shop (Gold Shells) → PRSR reset à 1.0 (ou valeur First Quarter si équipée)
 → Depth suivant, Entité plus dure
 ```
 
@@ -30,8 +32,8 @@ Arriver sur un Depth
 3. **Check de Bust** : Si la main dépasse 21 → Bust. Le joueur perd la mise immédiatement.
 4. **Révélation du Dealer** : Si pas de Bust, le dealer révèle ses cartes selon ses règles fixes.
 5. **Résolution** :
-   - Joueur > Dealer (sans bust) → **Victoire de main** : dégâts à l'Entité + récupération de la mise
-   - Dealer > Joueur → **Défaite de main** : perte de la mise
-   - Égalité → **Push** : mise remboursée, 0 dégât
-
-> ❓ DÉCISION — En cas de Push, le PRSR accumulé cette main est-il conservé ou réinitialisé ?
+   - Joueur > Dealer, score < 21 → **Victoire** : entité perd `Mise × PRSR`, joueur récupère sa mise
+   - Joueur = 21 au tirage (3+ cartes) → **21** : entité perd `Mise × PRSR × 1.5`, joueur récupère sa mise
+   - Joueur = 21 en 2 cartes → **Blackjack** : entité perd `Mise × PRSR × 2`, joueur récupère sa mise
+   - Dealer > Joueur → **Défaite** : perte de la mise
+   - Égalité → **Push** : mise remboursée, 0 dégât, PRSR conservée

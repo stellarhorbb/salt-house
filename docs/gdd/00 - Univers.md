@@ -1,16 +1,18 @@
-# 00 — Identité & Univers
 
 ## 0.1 Titre
 
-Le jeu s'appelle **Salt House**. Le sel comme économie, comme danger, comme profondeur. Une maison qu'on construit sous l'eau.
+**Salt House**
+La descente commence avec rien. Chaque zone plus profonde, une Entité plus grande à chaque profondeur, son pool de Sel plus vaste que tout ce qu'on possède.
 
-> ❓ DÉCISION — Conserver "Fathom" comme titre ou basculer définitivement sur "Salt House" ?
+Le Sel est la seule ressource, la vie, la mise, les récompenses, la mort. On joue au blackjack pour en voler. On perd une main, on perd ce qu'on a misé. On trouve des Echos qui réécrivent les règles. On choisit des Cartes Lune pour orienter la croissance, construire des synergies, faire pencher le edge dans le bon sens. Les grands nombres arrivent. Puis les Mutations activent, et le jeu change.
+
+Dans les profondeurs, la maison gagne toujours.
 
 ---
 
 ## 0.2 High Concept
 
-> Un roguelite casino où tu joues au Blackjack contre une Entité, tu mises du Salt pour lui voler le sien, et tu construis un deck de cartes pour survivre le plus profond possible.
+> Un roguelite casino où tu joues des mains de Blackjack contre une Entité, tu mises du Salt pour lui voler le sien, et tu construis un deck de cartes pour survivre le plus profond possible.
 
 - **Références gameplay :** Balatro (deck building roguelite), Blackjack (mécanique centrale)
 - **Références DA & ton :** Hollow Knight, FromSoftware, Cult of the Lamb (style visuel)
