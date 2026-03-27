@@ -50,6 +50,7 @@ func _ready() -> void:
 
 	deck_node.gui_input.connect(_on_deck_gui_input)
 	close_button.pressed.connect(_close_deck_inspector)
+	set_process_unhandled_key_input(true)
 
 
 func _refresh_zone() -> void:
@@ -72,6 +73,14 @@ func _refresh_moon_display() -> void:
 
 # ── Deck Inspector ──────────────────────────────────────────────────────────────
 
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.keycode == KEY_TAB:
+		if event.pressed and not event.echo:
+			_open_deck_inspector()
+		elif not event.pressed:
+			_close_deck_inspector()
+
+
 func _on_deck_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton \
 			and event.pressed \
@@ -89,11 +98,11 @@ func _close_deck_inspector() -> void:
 
 
 func _populate_inspector() -> void:
-	var all: Array[CardResource] = DeckManager.get_all_cards()
-	_fill_row(row_diamonds, CardResource.FAMILY_DIAMONDS, all)
-	_fill_row(row_hearts,   CardResource.FAMILY_HEARTS,   all)
-	_fill_row(row_spades,   CardResource.FAMILY_SPADES,   all)
-	_fill_row(row_clubs,    CardResource.FAMILY_CLUBS,     all)
+	var draw_pile: Array[CardResource] = DeckManager.get_draw_pile()
+	_fill_row(row_diamonds, CardResource.FAMILY_DIAMONDS, draw_pile)
+	_fill_row(row_hearts,   CardResource.FAMILY_HEARTS,   draw_pile)
+	_fill_row(row_spades,   CardResource.FAMILY_SPADES,   draw_pile)
+	_fill_row(row_clubs,    CardResource.FAMILY_CLUBS,    draw_pile)
 
 
 func _fill_row(row: HBoxContainer, family: StringName, all: Array[CardResource]) -> void:

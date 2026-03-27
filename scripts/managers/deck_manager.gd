@@ -91,6 +91,11 @@ func remaining() -> int:
 	return _deck.size()
 
 
+# Cartes encore dans la pioche (pas encore tirées cette zone)
+func get_draw_pile() -> Array[CardResource]:
+	return _deck.duplicate() as Array[CardResource]
+
+
 # Toutes les cartes du run (deck + défausse + en jeu), exclut les supprimées
 func get_all_cards() -> Array[CardResource]:
 	var all: Array[CardResource] = []

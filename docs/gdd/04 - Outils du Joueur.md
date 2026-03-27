@@ -4,24 +4,18 @@
 
 Modificateurs passifs équipés pour toute la durée d'un combat (ou de la Dive selon le type). L'équivalent des Jokers/Reliques.
 
-Ils touchent des axes **spécifiques au système BJ** :
+**Classification interne par déclencheur** — 6 familles :
 
-| Axe | Exemple d'effet |
+| Famille | Déclencheurs |
 |---|---|
-| Familles | "Si ta main contient 3 Abyssal → PRSR +0.3 ce tour" |
-| Hit bonus | "Chaque Hit donne +0.2 PRSR au lieu de +0.1" |
-| Protection bust | "Un bust par combat est ignoré" |
-| Mise | "Si tu mises 20+ Salt → PRSR ×1.5" |
-| Valeurs | "Chaque As dans ta main → +0.1 PRSR" |
-| Figures | "Si ta main contient 2 Figures → mise remboursée en cas de défaite" |
-| Économie | "Main gagnante → +10% Salt bonus" |
-| Streak | "3 mains gagnées consécutives → PRSR permanent +0.2 pour ce combat" |
+| **Cas limites** | Push, 21 au tirage, blackjack naturel, all-in, bust |
+| **Tempo** | Vitesse de zone, nombre de mains, streaks de victoires |
+| **PRSR / risque** | Hits, mains longues, stands risqués, valeurs de main spécifiques |
+| **Économie** | Gold Shells en stock, dépenses au shop, génération en combat |
+| **États de cartes** | Horizon, Fissurée, Salée, Sous Pression, Dorée, Flexible |
+| **Combinaisons** | Paires, brelans, cartes de même famille, mains composées de figures |
 
-**Familles d'Echoes identifiées :**
-- **Cas limites** — push, 21 tiré, all-in
-- **Tempo** — vitesse de zone, nombre de turns (ex: zone vidée en ≤5 turns → bonus Salt)
-- **PRSR / risque** — amplifier les hits, les mains longues
-- **Gold Shells** — effets passifs basés sur le stock de Gold Shells, génération en combat, conversions Gold Shells ↔ Salt / PRSR
+**Types d'effets possibles** (orthogonaux aux familles) : +PRSR, +Salt, Protection (mise remboursée, bust amorti, perte réduite), +Gold Shells.
 
 **Ce que les Echoes ne font PAS :** modifier les valeurs numériques des cartes directement (trop proche de Balatro, crée de l'imprévisibilité négative dans un système où 21 est le plafond fixe).
 
@@ -64,7 +58,9 @@ Les Moon Cards sont des modificateurs **permanents pour toute la run** — elles
 **Pas de plafond de mise.** Le joueur peut all-in à tout moment.
 
 **Lunes spéciales (post-launch / Légendaires) :**
-- **Blood Moon**, **Super Moon**, **Eclipse**… — effets plus puissants, rares, potentiellement risqués.
+- **Blood Moon** — supprime définitivement une carte du deck (déjà implémentée)
+- **Drowned Moon** — récupère du Salt sur chaque bust, mais le Salt pool de l'Entité ne diminue pas sur les victoires normales
+- Autres à concevoir (Super Moon, Eclipse…) — effets radicaux, session dédiée
 
 **Acquisition :** Via Pack de Moon Cards au Shop (présente 2 cartes, en choisir 1) ou en achat unitaire direct au Shop.
 
@@ -74,7 +70,28 @@ Les Moon Cards sont des modificateurs **permanents pour toute la run** — elles
 
 ---
 
-## 4.3 Les Bet Buttons
+## 4.3 Les Cartes Alchimiques
+
+Deuxième famille de cartes de shop — distinctes des Moon Cards. Là où les Moon Cards modifient les valeurs globales de la run, les Cartes Alchimiques **appliquent un état sur une carte du deck**.
+
+À l'achat, le joueur choisit une carte parmi une sélection aléatoire de son deck, et l'état s'applique définitivement.
+
+| Carte | État appliqué |
+|---|---|
+| **Sel** | *Salée* — main gagnante → vole X Salt flat supplémentaire |
+| **Soufre** | *Fissurée* — bust avec elle en main → récupère X% de la mise |
+| **Mercure** | *Flexible* — compte ±1 de sa valeur face |
+| **Or** | *Dorée* — main gagnante → génère X Gold Shells |
+| **Azoth** | *Horizon* — dernière carte avant un Stand → +50% du Salt misé en bonus |
+| **Plomb** | *Sous Pression* — quand tirée → +X PRSR direct |
+
+**Acquisition :** vendues à l'unité au Shop (prix accessible), ou dans un pack dédié.
+
+> ❓ DÉCISION — Nombre de cartes proposées au choix lors de l'application (3 cartes aléatoires du deck ?)
+
+---
+
+## 4.5 Les Bet Buttons
 
 Les Bet Buttons sont les boutons de mise du joueur — à la fois interface et **objet de build roguelite**.
 
@@ -125,19 +142,25 @@ Via **Button Packs** achetés au Shop, ou comme récompense de zone rare.
 
 ---
 
-## 4.4 Les Boosters (Packs)
+## 4.6 Les Boosters (Packs)
 
 Achetés au Shop en **Gold Shells**, les Boosters sont des packs au contenu aléatoire. Après achat, le joueur choisit parmi les propositions du pack. Il n'y a pas de stock — les boosters sont ouverts immédiatement à l'achat.
+
+**Structure du Shop — 5 types d'items :**
+
+| Item | Type | Description |
+|---|---|---|
+| **Moon Cards** | Fondamental | Modificateurs globaux de run (Full, New, First, Last Quarter + spéciales) |
+| **Cartes Alchimiques** | Amélioration | Appliquent un état sur une carte du deck (Sel, Soufre, Mercure, Or, Azoth, Plomb) |
+| **Echoes** | Passif | Modificateurs de combat classés par déclencheur |
+| **Pack de Cartes** | Deck building | Cartes normales ou avec état à ajouter au deck |
+| **Bet Buttons** | Interface/build | Boutons de mise spéciaux |
+
+**Packs disponibles :**
 
 | Booster | Contenu | Choix |
 |---|---|---|
 | **Pack d'Echoes** | 3-5 Echoes aléatoires | Choisir 1 |
 | **Pack de Moon Cards** | 2 Moon Cards aléatoires | Choisir 1, appliquée immédiatement |
-| **Pack de Cartes** | Cartes simples ou spéciales | Choisir 1 à ajouter au deck |
+| **Pack de Cartes** | Cartes normales ou avec état | Choisir 1 à ajouter au deck |
 | **Pack de Bet Buttons** | 1 Bet Button aléatoire | Ajouté directement aux slots |
-
-**Cartes simples vs cartes spéciales :**
-- *Carte simple* : copie d'une carte standard (valeur + famille) ajoutée au deck
-- *Carte spéciale* : carte avec un effet en combat (familles et effets à définir)
-
-> ❓ DÉCISION — Catalogue des cartes spéciales (familles d'effets à concevoir, session dédiée).
