@@ -7,6 +7,7 @@ extends Node
 var _deck: Array[CardResource] = []
 var _discard: Array[CardResource] = []
 var _in_play: Array[CardResource] = []  # cartes actuellement sur la table
+var _removed_keys: Array[String] = []   # cartes supprimées définitivement du run
 
 
 func _ready() -> void:
@@ -56,6 +57,11 @@ func build_standard_deck() -> void:
 			card.display_name = face
 			_deck.append(card)
 
+	# Filtrage des cartes supprimées définitivement
+	_deck = _deck.filter(func(c: CardResource) -> bool:
+		return not _removed_keys.has(_card_key(c))
+	)
+
 	shuffle()
 
 
@@ -85,9 +91,43 @@ func remaining() -> int:
 	return _deck.size()
 
 
+# Toutes les cartes du run (deck + défausse + en jeu), exclut les supprimées
+func get_all_cards() -> Array[CardResource]:
+	var all: Array[CardResource] = []
+	all.append_array(_deck)
+	all.append_array(_discard)
+	all.append_array(_in_play)
+	return all
+
+
+# Retourne count cartes aléatoires du deck sans les retirer (pour le choix Blood Moon)
+func get_sample(count: int) -> Array[CardResource]:
+	var pool: Array[CardResource] = _deck.duplicate()
+	pool.shuffle()
+	var result: Array[CardResource] = []
+	for i: int in mini(count, pool.size()):
+		result.append(pool[i])
+	return result
+
+
+# Supprime définitivement une carte du run (Blood Moon)
+func remove_from_pool(card: CardResource) -> void:
+	var key: String = _card_key(card)
+	if not _removed_keys.has(key):
+		_removed_keys.append(key)
+	# Suppression immédiate du deck et de la défausse si présente
+	_deck = _deck.filter(func(c: CardResource) -> bool: return _card_key(c) != key)
+	_discard = _discard.filter(func(c: CardResource) -> bool: return _card_key(c) != key)
+
+
+func _card_key(card: CardResource) -> String:
+	return "%s_%s" % [card.family, card.display_name]
+
+
 # ── Signals ────────────────────────────────────────────────────────────────────
 
 func _on_run_started() -> void:
+	_removed_keys.clear()
 	build_standard_deck()
 
 

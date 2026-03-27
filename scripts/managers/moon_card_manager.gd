@@ -31,6 +31,9 @@ func apply(card: MoonCardResource) -> void:
 			salt_steal_bonus_pct += card.value
 		MoonCardResource.EffectType.SALT_RECOVERY_PCT:
 			salt_recovery_pct += card.value
+		MoonCardResource.EffectType.BLOOD_MOON:
+			SignalBus.blood_moon_triggered.emit()
+			return
 	SignalBus.moon_card_applied.emit(card)
 
 

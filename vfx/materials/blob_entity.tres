@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://svijloj2bxp5"]
+
+[ext_resource type="Shader" uid="uid://pq60yrvvlnw0" path="res://vfx/shaders/blob_entity.gdshader" id="1"]
+
+[resource]
+shader = ExtResource("1")
+shader_parameter/aspect = 1.98100009083762
+shader_parameter/speed = 0.334000015865
+shader_parameter/wobble = 0.1200000057
+shader_parameter/softness = 0.0
+shader_parameter/padding = 0.15
+shader_parameter/color_left = Color(0.1254902, 0.8784314, 0.99607843, 1)
+shader_parameter/color_mid = Color(0.90588236, 0.5647059, 1, 1)
+shader_parameter/color_right = Color(1, 0.9372549, 0.44705883, 1)

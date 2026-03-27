@@ -48,7 +48,8 @@ signal gold_shells_changed(new_amount: int)
 signal gold_shells_earned(amount: int)  # shells gagnées post-combat (base + bonus)
 
 # ── Moon Cards ──────────────────────────────────────────────────────────────────
-signal moon_card_applied(card)  # MoonCardResource — consommée, effet appliqué
+signal moon_card_applied(card)   # MoonCardResource — consommée, effet appliqué
+signal blood_moon_triggered()    # Blood Moon choisie — ouvre le flow de suppression
 
 # ── Shop / Rewards ─────────────────────────────────────────────────────────────
 signal reward_selected(reward)   # EchoResource | MutationResource

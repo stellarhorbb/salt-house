@@ -8,6 +8,7 @@ const FIRST_QUARTER := preload("res://resources/moon_cards/first_quarter.tres")
 const LAST_QUARTER  := preload("res://resources/moon_cards/last_quarter.tres")
 const FULL_MOON     := preload("res://resources/moon_cards/full_moon.tres")
 const NEW_MOON      := preload("res://resources/moon_cards/new_moon.tres")
+const BLOOD_MOON    := preload("res://resources/moon_cards/blood_moon.tres")
 
 var reroll_count: int = 0
 # Les 2 Moon Cards actuellement dans le pack
@@ -49,7 +50,7 @@ func buy_pack() -> void:
 
 
 func _populate_stock() -> void:
-	var all: Array[MoonCardResource] = [FIRST_QUARTER, LAST_QUARTER, FULL_MOON, NEW_MOON]
+	var all: Array[MoonCardResource] = [FIRST_QUARTER, LAST_QUARTER, FULL_MOON, NEW_MOON, BLOOD_MOON]
 	all.shuffle()
 	pack_cards = [all[0], all[1]]
 

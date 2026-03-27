@@ -5,6 +5,9 @@
 extends Control
 
 
+const CardVisualScene := preload("res://scenes/battle/hand/card_visual.tscn")
+const CARD_ORDER := ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+
 @onready var zone_name_label: Label   = $TopLeft/ZoneNameLabel
 @onready var zone_number_label: Label = $TopLeft/ZoneNumberLabel
 @onready var turn_value_label: Label  = $TopRight/TurnValueLabel
@@ -12,13 +15,21 @@ extends Control
 @onready var salt_label: Label        = $BottomLeft/SaltRow/SaltLabel
 @onready var shells_label: Label      = $BottomLeft/ShellsRow/ShellsLabel
 
-@onready var deck_count_label: Label  = $BottomRight/DeckCountLabel
+@onready var deck_node: HBoxContainer  = $Deck
+@onready var deck_count_label: Label   = $Deck/DeckCountLabel
 @onready var salt_icon_node: TextureRect = $BottomLeft/SaltRow/SaltIcon
 
 @onready var moon_last_quarter_label: Label  = $MoonCardPanel/MoonRow_LastQuarter/ValueLabel
 @onready var moon_full_moon_label: Label     = $MoonCardPanel/MoonRow_FullMoon/ValueLabel
 @onready var moon_first_quarter_label: Label = $MoonCardPanel/MoonRow_FirstQuarter/ValueLabel
 @onready var moon_new_moon_label: Label      = $MoonCardPanel/MoonRow_NewMoon/ValueLabel
+
+@onready var deck_inspector: Control        = $DeckInspector
+@onready var close_button: Button           = $DeckInspector/Content/Header/CloseButton
+@onready var row_diamonds: HBoxContainer    = $DeckInspector/Content/RowDiamonds
+@onready var row_hearts: HBoxContainer      = $DeckInspector/Content/RowHearts
+@onready var row_spades: HBoxContainer      = $DeckInspector/Content/RowSpades
+@onready var row_clubs: HBoxContainer       = $DeckInspector/Content/RowClubs
 
 var _turn_count: int = 0
 var _salt_displayed: int = 0
@@ -37,6 +48,9 @@ func _ready() -> void:
 	SignalBus.moon_card_applied.connect(_on_moon_card_applied)
 	SignalBus.salt_loot_fly.connect(_on_salt_loot_fly)
 
+	deck_node.gui_input.connect(_on_deck_gui_input)
+	close_button.pressed.connect(_close_deck_inspector)
+
 
 func _refresh_zone() -> void:
 	if EntityManager.current_zone == null:
@@ -54,6 +68,51 @@ func _refresh_moon_display() -> void:
 	moon_full_moon_label.text = "+%d%%" % int(s * 100.0) if s > 0.0 else "—"
 	var r: float = MoonCardManager.salt_recovery_pct
 	moon_new_moon_label.text = "+%d%%" % int(r * 100.0) if r > 0.0 else "—"
+
+
+# ── Deck Inspector ──────────────────────────────────────────────────────────────
+
+func _on_deck_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton \
+			and event.pressed \
+			and event.button_index == MOUSE_BUTTON_LEFT:
+		_open_deck_inspector()
+
+
+func _open_deck_inspector() -> void:
+	_populate_inspector()
+	deck_inspector.visible = true
+
+
+func _close_deck_inspector() -> void:
+	deck_inspector.visible = false
+
+
+func _populate_inspector() -> void:
+	var all: Array[CardResource] = DeckManager.get_all_cards()
+	_fill_row(row_diamonds, CardResource.FAMILY_DIAMONDS, all)
+	_fill_row(row_hearts,   CardResource.FAMILY_HEARTS,   all)
+	_fill_row(row_spades,   CardResource.FAMILY_SPADES,   all)
+	_fill_row(row_clubs,    CardResource.FAMILY_CLUBS,     all)
+
+
+func _fill_row(row: HBoxContainer, family: StringName, all: Array[CardResource]) -> void:
+	for child in row.get_children():
+		child.queue_free()
+
+	var family_cards: Array[CardResource] = []
+	for card: CardResource in all:
+		if card.family == family:
+			family_cards.append(card)
+
+	family_cards.sort_custom(func(a: CardResource, b: CardResource) -> bool:
+		return CARD_ORDER.find(a.display_name) < CARD_ORDER.find(b.display_name)
+	)
+
+	for i: int in family_cards.size():
+		var cv: CardVisual = CardVisualScene.instantiate()
+		row.add_child(cv)
+		cv.setup(family_cards[i], i * 0.04)
 
 
 # ── Signaux entrants ───────────────────────────────────────────────────────────

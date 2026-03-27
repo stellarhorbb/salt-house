@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MoonCardResource" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/moon_card_resource.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/moon_cards/blood-moon-card.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+card_name = "Blood Moon"
+phase = &"blood_moon"
+effect_type = 4
+value = 0.0
+icon = ExtResource("2")

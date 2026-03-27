@@ -2,14 +2,9 @@
 
 [ext_resource type="Script" uid="uid://gkp7dg7qpj3i" path="res://scripts/ui/battle_scene.gd" id="1"]
 [ext_resource type="FontFile" uid="uid://dmi17alnu3pan" path="res://assets/fonts/LondrinaSolid-Regular.ttf" id="2"]
-[ext_resource type="Material" uid="uid://cb7bqh6uene3y" path="res://vfx/materials/wave_top.tres" id="3"]
-[ext_resource type="Texture2D" uid="uid://cry5eegpfj1p2" path="res://assets/cards/backs/generic-back-icon.png" id="4"]
+[ext_resource type="Material" uid="uid://svijloj2bxp5" path="res://vfx/materials/blob_entity.tres" id="3"]
 [ext_resource type="Texture2D" uid="uid://cny7d6eg3wuh2" path="res://assets/ui/icons/salt-icon-white.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://cya10peffrcxa" path="res://assets/ui/icons/pressure-yellow.png" id="6"]
-[ext_resource type="Texture2D" uid="uid://d4kwww5k1phhl" path="res://assets/ui/icons/salt-icon.png" id="7"]
-
-[sub_resource type="StyleBoxFlat" id="pb_fill"]
-bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="deal_normal"]
 bg_color = Color(1, 1, 1, 1)
@@ -18,19 +13,21 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxFlat" id="deal_pressed"]
-bg_color = Color(0.72, 0.72, 0.72, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="Gradient" id="btn_gradient"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0.937, 0.447, 1, 0.906, 0.565, 1, 1, 0.125, 0.878, 0.996, 1)
 
-[sub_resource type="StyleBoxFlat" id="deal_hover"]
-bg_color = Color(0.88, 0.88, 0.88, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="GradientTexture2D" id="btn_gradient_tex"]
+gradient = SubResource("btn_gradient")
+width = 256
+height = 4
+
+[sub_resource type="StyleBoxTexture" id="btn_pressed_grad"]
+texture = SubResource("btn_gradient_tex")
+modulate_color = Color(0.7, 0.7, 0.7, 1)
+
+[sub_resource type="StyleBoxTexture" id="btn_hover"]
+texture = SubResource("btn_gradient_tex")
 
 [node name="BattleScene" type="Control" unique_id=341472177]
 layout_mode = 3
@@ -42,12 +39,16 @@ grow_vertical = 2
 script = ExtResource("1")
 ui_margin = 40
 
-[node name="WaveBackground" type="ColorRect" parent="." unique_id=973449317]
+[node name="EntityBlob" type="ColorRect" parent="." unique_id=973449317]
 material = ExtResource("3")
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 230.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -960.0
+offset_top = -276.0
+offset_right = 960.0
+offset_bottom = 275.0
 grow_horizontal = 2
 mouse_filter = 2
 
@@ -60,97 +61,34 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TopBar" type="Control" parent="Content" unique_id=1804491336]
+[node name="EntityInfo" type="VBoxContainer" parent="Content" unique_id=1530032105]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 130.0
-grow_horizontal = 2
-
-[node name="ZoneInfo" type="VBoxContainer" parent="Content/TopBar" unique_id=1436130440]
-layout_mode = 1
-offset_right = 360.0
-offset_bottom = 130.0
-
-[node name="ZoneNameLabel" type="Label" parent="Content/TopBar/ZoneInfo" unique_id=484751208]
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 32
-text = "THE SURFACE"
-uppercase = true
-
-[node name="DepthLabel" type="Label" parent="Content/TopBar/ZoneInfo" unique_id=1303604965]
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 56
-text = "0.1"
-uppercase = true
-
-[node name="EntityBarContainer" type="VBoxContainer" parent="Content/TopBar" unique_id=1530032105]
-layout_mode = 1
-anchors_preset = 5
+anchors_preset = -1
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -346.0
-offset_right = 346.0
-offset_bottom = 100.0
+offset_left = -400.0
+offset_top = 1.0
+offset_right = 400.0
+offset_bottom = 139.0
 grow_horizontal = 2
+theme_override_constants/separation = -10
 
-[node name="EntitySaltRow" type="HBoxContainer" parent="Content/TopBar/EntityBarContainer" unique_id=856980063]
+[node name="EntityPoolLabel" type="Label" parent="Content/EntityInfo" unique_id=856980063]
 layout_mode = 2
-theme_override_constants/separation = 8
-alignment = 1
-
-[node name="EntitySaltIcon" type="TextureRect" parent="Content/TopBar/EntityBarContainer/EntitySaltRow" unique_id=856980062]
-custom_minimum_size = Vector2(36, 36)
-layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("7")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="EntitySaltLabel" type="Label" parent="Content/TopBar/EntityBarContainer/EntitySaltRow" unique_id=856980064]
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 0.85)
 theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 42
-text = "500"
+theme_override_font_sizes/font_size = 28
+text = "ENTITY SALT POOL"
 horizontal_alignment = 1
 uppercase = true
 
-[node name="EntityProgressBar" type="ProgressBar" parent="Content/TopBar/EntityBarContainer" unique_id=1891579949]
-custom_minimum_size = Vector2(693, 25)
+[node name="EntitySaltLabel" type="Label" parent="Content/EntityInfo" unique_id=856980064]
 layout_mode = 2
-theme_override_styles/fill = SubResource("pb_fill")
-show_percentage = false
-
-[node name="TurnDisplay" type="VBoxContainer" parent="Content/TopBar" unique_id=827727196]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -250.0
-offset_bottom = 130.0
-grow_horizontal = 0
-
-[node name="TurnTitleLabel" type="Label" parent="Content/TopBar/TurnDisplay" unique_id=725799047]
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 32
-text = "TURN"
-horizontal_alignment = 2
-uppercase = true
-
-[node name="TurnCounterLabel" type="Label" parent="Content/TopBar/TurnDisplay" unique_id=889101234]
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 56
-text = "0"
-horizontal_alignment = 2
+theme_override_font_sizes/font_size = 96
+text = "500"
+horizontal_alignment = 1
 uppercase = true
 
 [node name="StakeDisplay" type="HBoxContainer" parent="Content" unique_id=545376283]
@@ -334,76 +272,9 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("deal_normal")
-theme_override_styles/pressed = SubResource("deal_pressed")
-theme_override_styles/hover = SubResource("deal_hover")
+theme_override_styles/pressed = SubResource("btn_pressed_grad")
+theme_override_styles/hover = SubResource("btn_hover")
 text = "STAKE"
-
-[node name="PlayerSaltDisplay" type="VBoxContainer" parent="Content" unique_id=900000004]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -160.0
-offset_right = 260.0
-grow_vertical = 0
-
-[node name="PlayerSaltRow" type="HBoxContainer" parent="Content/PlayerSaltDisplay" unique_id=900000010]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="PlayerSaltIcon" type="TextureRect" parent="Content/PlayerSaltDisplay/PlayerSaltRow" unique_id=900000011]
-custom_minimum_size = Vector2(52, 52)
-layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("7")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="PlayerSaltAmountLabel" type="Label" parent="Content/PlayerSaltDisplay/PlayerSaltRow" unique_id=900000006]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 76
-text = "100"
-uppercase = true
-
-[node name="PlayerSaltTitleLabel" type="Label" parent="Content/PlayerSaltDisplay" unique_id=900000005]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 28
-text = "YOUR SALT"
-uppercase = true
-
-[node name="DeckDisplay" type="HBoxContainer" parent="Content" unique_id=900000007]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -110.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_constants/separation = 12
-alignment = 1
-
-[node name="DeckCountLabel" type="Label" parent="Content/DeckDisplay" unique_id=900000008]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 56
-text = "52"
-vertical_alignment = 1
-uppercase = true
-
-[node name="DeckCardIcon" type="TextureRect" parent="Content/DeckDisplay" unique_id=900000009]
-custom_minimum_size = Vector2(50, 68)
-layout_mode = 2
-texture = ExtResource("4")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="PlayLayer" type="Control" parent="Content" unique_id=1066095209]
 visible = false
@@ -504,134 +375,36 @@ grow_vertical = 0
 [node name="HitButton" type="Button" parent="Content/PlayLayer/ActionButtons" unique_id=642082964]
 custom_minimum_size = Vector2(240, 75)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("deal_normal")
+theme_override_styles/pressed = SubResource("btn_pressed_grad")
+theme_override_styles/hover = SubResource("btn_hover")
 text = "HIT"
 
 [node name="StandButton" type="Button" parent="Content/PlayLayer/ActionButtons" unique_id=182233735]
 custom_minimum_size = Vector2(240, 75)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("deal_normal")
+theme_override_styles/pressed = SubResource("btn_pressed_grad")
+theme_override_styles/hover = SubResource("btn_hover")
 text = "STAND"
 
 [node name="DoubleButton" type="Button" parent="Content/PlayLayer/ActionButtons" unique_id=312847651]
 visible = false
 custom_minimum_size = Vector2(240, 75)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("deal_normal")
+theme_override_styles/pressed = SubResource("btn_pressed_grad")
+theme_override_styles/hover = SubResource("btn_hover")
 text = "DOUBLE"
-
-[node name="MoonCardPanel" type="VBoxContainer" parent="Content" unique_id=800000001]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 0.35
-anchor_right = 1.0
-anchor_bottom = 0.35
-offset_left = -210.0
-offset_right = 0.0
-offset_bottom = 230.0
-grow_horizontal = 0
-theme_override_constants/separation = 10
-
-[node name="MoonPanelTitle" type="Label" parent="Content/MoonCardPanel" unique_id=800000002]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.5)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "MOON CARDS"
-horizontal_alignment = 2
-uppercase = true
-
-[node name="MoonRow_LastQuarter" type="HBoxContainer" parent="Content/MoonCardPanel" unique_id=800000003]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="PhaseLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_LastQuarter" unique_id=800000004]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "LAST QTR"
-uppercase = true
-
-[node name="ValueLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_LastQuarter" unique_id=800000005]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "—"
-horizontal_alignment = 2
-uppercase = true
-
-[node name="MoonRow_FullMoon" type="HBoxContainer" parent="Content/MoonCardPanel" unique_id=800000006]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="PhaseLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_FullMoon" unique_id=800000007]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "FULL MOON"
-uppercase = true
-
-[node name="ValueLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_FullMoon" unique_id=800000008]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "—"
-horizontal_alignment = 2
-uppercase = true
-
-[node name="MoonRow_FirstQuarter" type="HBoxContainer" parent="Content/MoonCardPanel" unique_id=800000009]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="PhaseLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_FirstQuarter" unique_id=800000010]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "FIRST QTR"
-uppercase = true
-
-[node name="ValueLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_FirstQuarter" unique_id=800000011]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "—"
-horizontal_alignment = 2
-uppercase = true
-
-[node name="MoonRow_NewMoon" type="HBoxContainer" parent="Content/MoonCardPanel" unique_id=800000012]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="PhaseLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_NewMoon" unique_id=800000013]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "NEW MOON"
-uppercase = true
-
-[node name="ValueLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_NewMoon" unique_id=800000014]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2")
-theme_override_font_sizes/font_size = 20
-text = "—"
-horizontal_alignment = 2
-uppercase = true
 
 [node name="GameOverOverlay" type="Control" parent="." unique_id=994563227]
 visible = false

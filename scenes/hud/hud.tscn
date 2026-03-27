@@ -1,52 +1,349 @@
 [gd_scene format=3 uid="uid://b176bbhdb0ugs"]
 
 [ext_resource type="Script" uid="uid://b8px01w87oydm" path="res://scripts/ui/hud.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://dmi17alnu3pan" path="res://assets/fonts/LondrinaSolid-Regular.ttf" id="2"]
+[ext_resource type="Texture2D" uid="uid://d4kwww5k1phhl" path="res://assets/ui/icons/salt-icon.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://fyqe3augwfo7" path="res://assets/ui/icons/golden-shell.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://cry5eegpfj1p2" path="res://assets/cards/backs/generic-back-icon.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://l02e1htn288y" path="res://assets/ui/icons/last-quarter-icon.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://bi3xj2n2ohpir" path="res://assets/ui/icons/full-moon-icon.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://ns8uyirys7qw" path="res://assets/ui/icons/first-quarter-icon.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://cddccog34xxbu" path="res://assets/ui/icons/new-moon-icon.png" id="9"]
 
-[node name="HUD" type="Control" unique_id=722809382]
+[node name="HUD" type="Control" unique_id=205004002]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1")
 
-[node name="TopBar" type="HBoxContainer" parent="." unique_id=71947814]
+[node name="TopLeft" type="VBoxContainer" parent="." unique_id=1946829176]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-grow_horizontal = 2
+offset_left = 40.0
+offset_top = 30.0
+offset_right = 360.0
+offset_bottom = 130.0
 
-[node name="SaltDisplay" type="HBoxContainer" parent="TopBar" unique_id=2018957270]
+[node name="ZoneNameLabel" type="Label" parent="TopLeft" unique_id=517137701]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 28
+text = "THE SURFACE"
+uppercase = true
 
-[node name="SaltLabel" type="Label" parent="TopBar/SaltDisplay" unique_id=883484980]
+[node name="ZoneNumberLabel" type="Label" parent="TopLeft" unique_id=1618790273]
 layout_mode = 2
-text = "Salt :"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 56
+text = "0.1"
+uppercase = true
 
-[node name="SaltValue" type="Label" parent="TopBar/SaltDisplay" unique_id=899479525]
+[node name="TopRight" type="VBoxContainer" parent="." unique_id=632257299]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -210.0
+offset_top = 30.0
+offset_right = -40.0
+offset_bottom = 130.0
+grow_horizontal = 0
+
+[node name="TurnTitleLabel" type="Label" parent="TopRight" unique_id=371127060]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 28
+text = "TURN"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="TurnValueLabel" type="Label" parent="TopRight" unique_id=2085814683]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 56
 text = "0"
+horizontal_alignment = 2
+uppercase = true
 
-[node name="PressureDisplay" type="HBoxContainer" parent="TopBar" unique_id=643721734]
-layout_mode = 2
+[node name="BottomLeft" type="VBoxContainer" parent="." unique_id=1552281044]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -190.0
+offset_right = 380.0
+grow_vertical = 0
+theme_override_constants/separation = 4
 
-[node name="PRSRLabel" type="Label" parent="TopBar/PressureDisplay" unique_id=1645549529]
+[node name="ShellsRow" type="HBoxContainer" parent="BottomLeft" unique_id=862847587]
 layout_mode = 2
-text = "PRSR :"
+theme_override_constants/separation = 10
 
-[node name="PressureValue" type="Label" parent="TopBar/PressureDisplay" unique_id=697708558]
+[node name="ShellIcon" type="TextureRect" parent="BottomLeft/ShellsRow" unique_id=188347159]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-text = "1.0"
+size_flags_vertical = 4
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="DepthDisplay" type="HBoxContainer" parent="TopBar" unique_id=1231651720]
+[node name="ShellsLabel" type="Label" parent="BottomLeft/ShellsRow" unique_id=501915757]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 36
+text = "0"
+vertical_alignment = 1
+uppercase = true
 
-[node name="DepthLabel" type="Label" parent="TopBar/DepthDisplay" unique_id=1933046881]
+[node name="SaltRow" type="HBoxContainer" parent="BottomLeft" unique_id=1538610254]
 layout_mode = 2
-text = "Zone"
+theme_override_constants/separation = 10
 
-[node name="DepthValue" type="Label" parent="TopBar/DepthDisplay" unique_id=610265621]
+[node name="SaltIcon" type="TextureRect" parent="BottomLeft/SaltRow" unique_id=1565554959]
+custom_minimum_size = Vector2(52, 52)
 layout_mode = 2
-text = "1-1"
+size_flags_vertical = 4
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SaltLabel" type="Label" parent="BottomLeft/SaltRow" unique_id=453464912]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 76
+text = "100"
+vertical_alignment = 1
+uppercase = true
+
+[node name="SaltTitleLabel" type="Label" parent="BottomLeft" unique_id=1880400801]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 28
+text = "YOUR SALT"
+uppercase = true
+
+[node name="Deck" type="HBoxContainer" parent="." unique_id=943201750]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -110.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="DeckCountLabel" type="Label" parent="Deck" unique_id=1388006393]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 56
+text = "52"
+vertical_alignment = 1
+uppercase = true
+
+[node name="DeckCardIcon" type="TextureRect" parent="Deck" unique_id=17543357]
+custom_minimum_size = Vector2(50, 68)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MoonCardPanel" type="VBoxContainer" parent="." unique_id=674429506]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.45600003
+anchor_right = 0.5
+anchor_bottom = 0.45600003
+offset_left = 693.0
+offset_top = -76.48004
+offset_right = 903.0
+offset_bottom = 193.51996
+grow_horizontal = 0
+theme_override_constants/separation = 15
+
+[node name="MoonPanelTitle" type="Label" parent="MoonCardPanel" unique_id=1234730603]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 28
+text = "MOON STATS"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="MoonRow_LastQuarter" type="HBoxContainer" parent="MoonCardPanel" unique_id=1657026415]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 8
+
+[node name="ValueLabel" type="Label" parent="MoonCardPanel/MoonRow_LastQuarter" unique_id=99683278]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 36
+text = "—"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="PhaseIcon" type="TextureRect" parent="MoonCardPanel/MoonRow_LastQuarter" unique_id=721033562]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MoonRow_FullMoon" type="HBoxContainer" parent="MoonCardPanel" unique_id=1095372721]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 8
+
+[node name="ValueLabel" type="Label" parent="MoonCardPanel/MoonRow_FullMoon" unique_id=518913868]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 36
+text = "—"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="PhaseIcon" type="TextureRect" parent="MoonCardPanel/MoonRow_FullMoon" unique_id=442945624]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MoonRow_FirstQuarter" type="HBoxContainer" parent="MoonCardPanel" unique_id=1416694616]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 8
+
+[node name="ValueLabel" type="Label" parent="MoonCardPanel/MoonRow_FirstQuarter" unique_id=1042609130]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 36
+text = "—"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="PhaseIcon" type="TextureRect" parent="MoonCardPanel/MoonRow_FirstQuarter" unique_id=671977866]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MoonRow_NewMoon" type="HBoxContainer" parent="MoonCardPanel" unique_id=2135005818]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 8
+
+[node name="ValueLabel" type="Label" parent="MoonCardPanel/MoonRow_NewMoon" unique_id=2090269691]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 36
+text = "—"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="PhaseIcon" type="TextureRect" parent="MoonCardPanel/MoonRow_NewMoon" unique_id=532075702]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("9")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DeckInspector" type="Control" parent="." unique_id=801000001]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="DeckInspector" unique_id=801000002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.85)
+
+[node name="Content" type="VBoxContainer" parent="DeckInspector" unique_id=801000003]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -290.0
+offset_right = 460.0
+offset_bottom = 290.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Header" type="HBoxContainer" parent="DeckInspector/Content" unique_id=801000004]
+layout_mode = 2
+alignment = 2
+
+[node name="TitleLabel" type="Label" parent="DeckInspector/Content/Header" unique_id=801000005]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 52
+text = "YOUR DECK"
+uppercase = true
+
+[node name="CloseButton" type="Button" parent="DeckInspector/Content/Header" unique_id=801000006]
+custom_minimum_size = Vector2(80, 52)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 28
+text = "✕"
+
+[node name="RowDiamonds" type="HBoxContainer" parent="DeckInspector/Content" unique_id=801000007]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = -40
+
+[node name="RowHearts" type="HBoxContainer" parent="DeckInspector/Content" unique_id=801000008]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = -40
+
+[node name="RowSpades" type="HBoxContainer" parent="DeckInspector/Content" unique_id=801000009]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = -40
+
+[node name="RowClubs" type="HBoxContainer" parent="DeckInspector/Content" unique_id=801000010]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = -40

@@ -9,6 +9,7 @@ enum EffectType {
 	PRESSURE_PER_HIT_BONUS, # adds to PRSR per hit (Last Quarter)
 	SALT_STEAL_BONUS_PCT,   # % bonus to salt stolen on win (Full Moon)
 	SALT_RECOVERY_PCT,      # % of stake recovered on non-bust loss (New Moon)
+	BLOOD_MOON,             # active — ouvre le flow de suppression d'une carte du deck
 }
 
 @export var card_name: String = ""
