@@ -14,18 +14,8 @@ const CardVisualScene := preload("res://scenes/battle/hand/card_visual.tscn")
 @export var danger_color: Color = Color(1.0, 0.3, 0.3)
 @export var normal_color: Color = Color(1.0, 1.0, 1.0)
 
-# Top bar
-@onready var zone_name_label: Label           = $Content/TopBar/ZoneInfo/ZoneNameLabel
-@onready var depth_label: Label               = $Content/TopBar/ZoneInfo/DepthLabel
-@onready var turn_counter_label: Label        = $Content/TopBar/TurnDisplay/TurnCounterLabel
-@onready var entity_salt_label: Label         = $Content/TopBar/EntityBarContainer/EntitySaltRow/EntitySaltLabel
-@onready var entity_progress_bar: ProgressBar = $Content/TopBar/EntityBarContainer/EntityProgressBar
-
-# Player salt (always visible)
-@onready var player_salt_label: Label         = $Content/PlayerSaltDisplay/PlayerSaltRow/PlayerSaltAmountLabel
-
-# Deck display (always visible)
-@onready var deck_count_label: Label          = $Content/DeckDisplay/DeckCountLabel
+# Entity info
+@onready var entity_salt_label: Label = $Content/EntityInfo/EntitySaltLabel
 
 # Stake display
 @onready var salt_value_label: Label     = $Content/StakeDisplay/SaltColumn/SaltPanel/SaltValueLabel
@@ -51,12 +41,6 @@ const CardVisualScene := preload("res://scenes/battle/hand/card_visual.tscn")
 @onready var stand_button: Button            = $Content/PlayLayer/ActionButtons/StandButton
 @onready var double_button: Button           = $Content/PlayLayer/ActionButtons/DoubleButton
 
-# Moon Cards panel (right side)
-@onready var moon_last_quarter_label: Label  = $Content/MoonCardPanel/MoonRow_LastQuarter/ValueLabel
-@onready var moon_full_moon_label: Label     = $Content/MoonCardPanel/MoonRow_FullMoon/ValueLabel
-@onready var moon_first_quarter_label: Label = $Content/MoonCardPanel/MoonRow_FirstQuarter/ValueLabel
-@onready var moon_new_moon_label: Label      = $Content/MoonCardPanel/MoonRow_NewMoon/ValueLabel
-
 # Safe area container
 @onready var _content: Control = $Content
 
@@ -67,11 +51,15 @@ const CardVisualScene := preload("res://scenes/battle/hand/card_visual.tscn")
 @onready var restart_button: Button      = $GameOverOverlay/ContentBox/RestartButton
 
 var _current_bet: int = 0
-var _turn_count: int = 0
 var _is_resolving: bool = false
 var _cards_dealt: int = 0          # compteur pour le stagger d'animation
 var _hole_card_token: CardVisual = null  # référence au token caché du dealer
 var _hole_revealed: bool = false   # true une fois la hole card retournée
+
+# Animation entity salt : gel pendant la main, anime après le résultat
+var _hand_active: bool = false
+var _entity_salt_displayed: int = 0  # valeur actuellement affichée
+var _entity_salt_target: int = 0     # valeur cible (set par entity_salt_changed)
 
 
 func _ready() -> void:
@@ -88,20 +76,17 @@ func _ready() -> void:
 		SceneManager.init(get_parent(), self)
 
 	# Signaux entrants
-	SignalBus.salt_changed.connect(_on_salt_changed)
 	SignalBus.entity_salt_changed.connect(_on_entity_salt_changed)
-	SignalBus.card_drawn.connect(_on_any_card_drawn_deck)
 	SignalBus.pressure_changed.connect(_on_pressure_changed)
 	SignalBus.zone_changed.connect(_on_zone_changed)
 	SignalBus.hand_started.connect(_on_hand_started)
+	SignalBus.player_turn_started.connect(_on_player_turn_started)
 	SignalBus.card_drawn.connect(_on_card_drawn)
 	SignalBus.dealer_card_drawn.connect(_on_dealer_card_drawn)
 	SignalBus.dealer_hole_dealt.connect(_on_dealer_hole_dealt)
 	SignalBus.dealer_card_revealed.connect(_on_dealer_card_revealed)
 	SignalBus.hand_resolved.connect(_on_hand_resolved)
 	SignalBus.run_ended.connect(_on_run_ended)
-	SignalBus.moon_card_applied.connect(_on_moon_card_applied)
-	SignalBus.run_started.connect(_refresh_moon_display)
 	restart_button.pressed.connect(_on_restart_pressed)
 
 	# Boutons de mise
@@ -117,22 +102,11 @@ func _ready() -> void:
 	stand_button.pressed.connect(_on_stand_pressed)
 	double_button.pressed.connect(_on_double_pressed)
 
-	_refresh_zone_labels()
-	entity_salt_label.text = _fmt(EntityManager.salt_pool)
-	entity_progress_bar.value = 100.0
-	player_salt_label.text = _fmt(BankrollManager.salt)
+	_entity_salt_displayed = EntityManager.salt_pool
+	_entity_salt_target = _entity_salt_displayed
+	entity_salt_label.text = _fmt(_entity_salt_displayed)
 	pressure_value_label.text = "%.1f" % PressureManager.pressure
-	deck_count_label.text = str(DeckManager.remaining())
 	_show_preparation()
-
-
-# ── États ──────────────────────────────────────────────────────────────────────
-
-func _refresh_zone_labels() -> void:
-	if EntityManager.current_zone == null:
-		return
-	zone_name_label.text = EntityManager.current_zone.zone_name
-	depth_label.text = str(EntityManager.current_zone_number)
 
 
 # ── États ──────────────────────────────────────────────────────────────────────
@@ -141,7 +115,7 @@ func _show_preparation() -> void:
 	preparation_layer.visible = true
 	play_layer.visible = false
 	_current_bet = 0
-	_refresh_top_bar()
+	salt_value_label.text = _fmt(_current_bet)
 	_clear_hand(dealer_hand_container)
 	_clear_hand(player_hand_container)
 
@@ -149,20 +123,15 @@ func _show_preparation() -> void:
 func _show_play() -> void:
 	preparation_layer.visible = false
 	play_layer.visible = true
-	dealer_score_label.text = "0"
-	player_score_label.text = "0"
+	dealer_score_label.visible = false
+	player_score_label.visible = false
 
 
 # ── Mise ───────────────────────────────────────────────────────────────────────
 
 func _on_bet_percent_pressed(percent: float) -> void:
 	_current_bet = int(BankrollManager.salt * percent)
-	_refresh_top_bar()
-
-
-func _refresh_top_bar() -> void:
 	salt_value_label.text = _fmt(_current_bet)
-	turn_counter_label.text = "Turn " + str(_turn_count)
 
 
 func _on_deal_pressed() -> void:
@@ -176,45 +145,34 @@ func _on_deal_pressed() -> void:
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 func _on_hit_pressed() -> void:
-	double_button.visible = false
+	_set_action_buttons_enabled(false)
 	SignalBus.player_hit.emit()
 
 
 func _on_stand_pressed() -> void:
+	_set_action_buttons_enabled(false)
 	SignalBus.player_stood.emit()
 
 
 func _on_double_pressed() -> void:
-	double_button.visible = false
+	_set_action_buttons_enabled(false)
 	SignalBus.player_doubled.emit()
 
 
 # ── Signaux entrants ───────────────────────────────────────────────────────────
 
-func _on_salt_changed(new_amount: int) -> void:
-	player_salt_label.text = _fmt(new_amount)
-
-
-func _on_any_card_drawn_deck(_arg = null) -> void:
-	deck_count_label.text = str(DeckManager.remaining())
-
-
 func _on_entity_salt_changed(new_amount: int) -> void:
-	entity_salt_label.text = _fmt(new_amount)
-	var target: float = float(new_amount) / float(maxi(EntityManager.max_pool, 1)) * 100.0
-	var tween := create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(entity_progress_bar, "value", target, 0.4)
+	_entity_salt_target = new_amount
+	if not _hand_active:
+		_entity_salt_displayed = new_amount
+		entity_salt_label.text = _fmt(new_amount)
 
 
 func _on_zone_changed(_zone_number: int) -> void:
-	_turn_count = 0
-	_refresh_zone_labels()
-	entity_salt_label.text = _fmt(EntityManager.salt_pool)
-	entity_progress_bar.value = 100.0
-	player_salt_label.text = _fmt(BankrollManager.salt)
+	_entity_salt_displayed = EntityManager.salt_pool
+	_entity_salt_target = _entity_salt_displayed
+	entity_salt_label.text = _fmt(_entity_salt_displayed)
 	pressure_value_label.text = "%.1f" % PressureManager.pressure
-	deck_count_label.text = str(DeckManager.remaining())
-	_refresh_top_bar()
 	_show_preparation()
 
 
@@ -223,29 +181,33 @@ func _on_pressure_changed(new_pressure: float) -> void:
 
 
 func _on_hand_started() -> void:
+	_hand_active = true
+	_entity_salt_target = EntityManager.salt_pool  # reset — pas de changement en cours
 	_cards_dealt = 0
 	_hole_card_token = null
 	_hole_revealed = false
+	_set_action_buttons_enabled(false)
 	_clear_hand(dealer_hand_container)
 	_clear_hand(player_hand_container)
-	deck_count_label.text = str(DeckManager.remaining())
+
+
+func _on_player_turn_started() -> void:
+	_set_action_buttons_enabled(true)
+	_refresh_double_button()
+	player_score_label.visible = true
 
 
 func _on_card_drawn(card: CardResource) -> void:
 	_add_card_to_hand(player_hand_container, card)
 	_update_player_score(BattleManager.player_score)
-	# Bouton double disponible uniquement sur la main initiale (2 cartes)
-	if BattleManager.player_hand.size() == 2:
-		_refresh_double_button()
 
 
 func _on_dealer_card_drawn(card: CardResource) -> void:
 	_add_card_to_hand(dealer_hand_container, card)
 	if _hole_revealed:
-		# Après révélation : score complet du dealer
 		_update_dealer_score(DealerManager.score)
 	else:
-		# Pendant le deal initial : n'afficher que la carte face up
+		# Deal initial : n'afficher que la valeur de la carte visible
 		var visible_value: int = GameRules.ACE_HIGH_VALUE if card.is_ace else card.value
 		_update_dealer_score(visible_value)
 
@@ -267,28 +229,56 @@ func _on_dealer_card_revealed(card: CardResource) -> void:
 
 
 func _on_hand_resolved(result: StringName, payout: int) -> void:
+	_hand_active = false
 	_is_resolving = true
-	_turn_count += 1
-	hit_button.disabled = true
-	stand_button.disabled = true
-	double_button.visible = false
+	_set_action_buttons_enabled(false)
 	_show_result(result, payout)
-	await get_tree().create_timer(GameRules.HAND_RESULT_DISPLAY_DURATION).timeout
+
+	# Pause dramatique, puis animation des chiffres
+	await get_tree().create_timer(0.6).timeout
+
+	if _entity_salt_target != _entity_salt_displayed:
+		var from_val := _entity_salt_displayed
+		var to_val := _entity_salt_target
+		_entity_salt_displayed = to_val
+
+		if to_val < from_val:
+			SignalBus.salt_loot_fly.emit(
+				entity_salt_label.get_global_rect().get_center(),
+				from_val - to_val
+			)
+			entity_salt_label.modulate = Color(1.0, 0.35, 0.35)
+			var tween_col := create_tween()
+			tween_col.tween_property(entity_salt_label, "modulate", Color.WHITE, 0.6).set_delay(0.9)
+
+		_punch_label(entity_salt_label, to_val > from_val)
+		_count_label(entity_salt_label, from_val, to_val, 1.2)
+
+	await get_tree().create_timer(1.8).timeout
 	_is_resolving = false
 	result_label.visible = false
-	hit_button.disabled = false
-	stand_button.disabled = false
 	_show_preparation()
 
 
+func _set_action_buttons_enabled(enabled: bool) -> void:
+	hit_button.disabled = not enabled
+	stand_button.disabled = not enabled
+	double_button.disabled = not enabled
+
+
 func _refresh_double_button() -> void:
+	var is_initial_hand: bool = BattleManager.player_hand.size() == 2
 	var can_full_double: bool = BankrollManager.salt >= BattleManager.current_bet
 	double_button.text = "DOUBLE" if can_full_double else "ALL IN\nDOUBLE"
-	double_button.visible = BankrollManager.salt > 0
+	double_button.visible = true
+	double_button.disabled = not (is_initial_hand and BankrollManager.salt > 0)
 
 
 func _show_result(result: StringName, payout: int) -> void:
 	result_label.visible = true
+	result_label.modulate.a = 0.0
+	var tween := create_tween()
+	tween.tween_property(result_label, "modulate:a", 1.0, 0.18)
 	match result:
 		&"win":
 			result_label.text = "+ %s" % _fmt(payout)
@@ -310,21 +300,6 @@ func _show_result(result: StringName, payout: int) -> void:
 			result_label.modulate = normal_color
 
 
-func _on_moon_card_applied(_card: MoonCardResource) -> void:
-	_refresh_moon_display()
-
-
-func _refresh_moon_display() -> void:
-	var b: float = MoonCardManager.pressure_base_bonus
-	moon_first_quarter_label.text = "+%.2f" % b if b > 0.0 else "—"
-	var h: float = MoonCardManager.pressure_per_hit_bonus
-	moon_last_quarter_label.text = "+%.2f" % h if h > 0.0 else "—"
-	var s: float = MoonCardManager.salt_steal_bonus_pct
-	moon_full_moon_label.text = "+%d%%" % int(s * 100.0) if s > 0.0 else "—"
-	var r: float = MoonCardManager.salt_recovery_pct
-	moon_new_moon_label.text = "+%d%%" % int(r * 100.0) if r > 0.0 else "—"
-
-
 func _on_run_ended(victory: bool) -> void:
 	game_over_overlay.visible = true
 	if victory:
@@ -336,10 +311,8 @@ func _on_run_ended(victory: bool) -> void:
 
 
 func _on_restart_pressed() -> void:
-	_turn_count = 0
 	game_over_overlay.visible = false
 	GameManager.start_run()
-	deck_count_label.text = str(DeckManager.remaining())
 
 
 # ── Helpers visuels ────────────────────────────────────────────────────────────
@@ -367,11 +340,26 @@ func _reflow_hand(container: Control) -> void:
 	container.custom_minimum_size.x = total_width
 
 
-
 func _clear_hand(container: Control) -> void:
 	for child in container.get_children():
 		child.queue_free()
 	container.custom_minimum_size = Vector2.ZERO
+
+
+func _punch_label(label: Label, is_gain: bool) -> void:
+	label.pivot_offset = label.size / 2.0
+	var tilt := deg_to_rad(7.0) if is_gain else deg_to_rad(-7.0)
+	var ts := create_tween()
+	ts.tween_property(label, "scale", Vector2(1.4, 1.4), 0.1).set_trans(Tween.TRANS_BACK)
+	ts.tween_property(label, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_SPRING)
+	var tr := create_tween()
+	tr.tween_property(label, "rotation", tilt, 0.1)
+	tr.tween_property(label, "rotation", 0.0, 0.35).set_trans(Tween.TRANS_SPRING)
+
+
+func _count_label(label: Label, from: int, to: int, duration: float) -> void:
+	var tween := create_tween()
+	tween.tween_method(func(v: float): label.text = _fmt(int(v)), float(from), float(to), duration)
 
 
 func _update_player_score(score: int) -> void:
@@ -380,6 +368,7 @@ func _update_player_score(score: int) -> void:
 
 
 func _update_dealer_score(score: int) -> void:
+	dealer_score_label.visible = true
 	dealer_score_label.text = str(score)
 
 

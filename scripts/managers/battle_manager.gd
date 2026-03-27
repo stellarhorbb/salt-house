@@ -21,22 +21,29 @@ func start_hand(bet: int) -> void:
 	current_bet = bet
 	player_hand.clear()
 	player_score = 0
-	_is_player_turn = true
+	_is_player_turn = false
 	SignalBus.hand_started.emit()
 	SignalBus.bet_placed.emit(bet)
 
-	# Distribution standard BJ : joueur, dealer (visible), joueur, dealer (caché)
+	# Distribution : 2 cartes joueur, pause, 2 cartes dealer
 	_deal_to_player()
+	await get_tree().create_timer(GameRules.CARD_DEAL_DELAY).timeout
+	_deal_to_player()
+	await get_tree().create_timer(GameRules.DEAL_GROUP_PAUSE).timeout
 	_deal_to_dealer_visible()
-	_deal_to_player()
+	await get_tree().create_timer(GameRules.CARD_DEAL_DELAY).timeout
 	_deal_to_dealer_hole()
 
 	# Blackjack naturel — révélation + résolution immédiate
 	if player_score == GameRules.BUST_THRESHOLD and player_hand.size() == 2:
-		_is_player_turn = false
+		await get_tree().create_timer(GameRules.CARD_DEAL_DELAY).timeout
 		SignalBus.dealer_card_revealed.emit(DealerManager.hole_card)
 		var payout := int(current_bet * PressureManager.pressure * GameRules.BLACKJACK_MULTIPLIER)
 		SignalBus.hand_resolved.emit(&"blackjack", payout)
+		return
+
+	_is_player_turn = true
+	SignalBus.player_turn_started.emit()
 
 
 func _deal_to_player() -> void:
@@ -63,8 +70,9 @@ func _deal_to_dealer_hole() -> void:
 
 func _resolve_hand() -> void:
 	_is_player_turn = false
+	await get_tree().create_timer(GameRules.DEALER_DRAW_DELAY).timeout
 	SignalBus.dealer_card_revealed.emit(DealerManager.hole_card)
-	DealerManager.play_turn()
+	await DealerManager.play_turn()
 
 	var result: StringName
 	var payout: int = 0
@@ -117,13 +125,15 @@ func _on_player_hit() -> void:
 		return
 	_deal_to_player()
 	if player_score > GameRules.BUST_THRESHOLD:
-		_resolve_hand()
+		await _resolve_hand()
+	else:
+		SignalBus.player_turn_started.emit()
 
 
 func _on_player_stood() -> void:
 	if not _is_player_turn:
 		return
-	_resolve_hand()
+	await _resolve_hand()
 
 
 func _on_player_doubled() -> void:
@@ -135,4 +145,4 @@ func _on_player_doubled() -> void:
 	SignalBus.bet_increased.emit(extra)
 	# Une seule carte, puis résolution directe
 	_deal_to_player()
-	_resolve_hand()
+	await _resolve_hand()

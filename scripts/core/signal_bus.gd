@@ -24,6 +24,7 @@ signal player_hit()
 signal player_stood()
 signal player_doubled()
 signal bet_increased(extra: int)  # mise augmentée par un double
+signal player_turn_started()                             # cartes initiales posées, joueur peut agir
 signal hand_resolved(result: StringName, payout: int)  # result: &"win" | &"lose" | &"push" | &"bust"
 
 # ── Combat — cards ─────────────────────────────────────────────────────────────
@@ -35,7 +36,8 @@ signal dealer_card_revealed(card)        # CardResource — hole card révélée
 # ── Salt ───────────────────────────────────────────────────────────────────────
 signal salt_changed(new_amount: int)
 signal entity_salt_changed(new_amount: int)
-signal salt_stolen(amount: int)  # player steals Salt from the Entity
+signal salt_stolen(amount: int)           # player steals Salt from the Entity
+signal salt_loot_fly(from_screen: Vector2, amount: int)  # déclenche les icônes volantes
 
 # ── Pressure ───────────────────────────────────────────────────────────────────
 signal pressure_changed(new_pressure: float)

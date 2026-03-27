@@ -57,7 +57,9 @@ func _on_hand_resolved(result: StringName, _payout: int) -> void:
 			add(_current_bet)
 	_current_bet = 0
 	if salt <= 0:
-		SignalBus.run_ended.emit(false)
+		# Différé pour laisser tous les handlers de hand_resolved s'exécuter
+		# (ex: MoonCardManager peut ajouter du Salt avant qu'on vérifie)
+		SignalBus.run_ended.emit.call_deferred(false)
 
 
 func _on_salt_stolen(amount: int) -> void:

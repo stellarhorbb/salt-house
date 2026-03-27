@@ -21,6 +21,9 @@ const PRESSURE_BLACKJACK_SPIKE := 1.0   # ⚠️ BALANCING — pressure bonus on
 const TWENTY_ONE_MULTIPLIER          := 1.5   # ⚠️ BALANCING — 21 au tirage → payout × 1.5
 const BLACKJACK_MULTIPLIER           := 2.0   # ⚠️ BALANCING — blackjack naturel (2 cartes) → payout × 2
 const HAND_RESULT_DISPLAY_DURATION   := 2.0   # durée d'affichage du résultat avant transition
+const CARD_DEAL_DELAY                := 0.15  # ⚠️ BALANCING — délai entre deux cartes consécutives dans le même groupe
+const DEAL_GROUP_PAUSE               := 0.5   # ⚠️ BALANCING — pause entre le groupe joueur et le groupe dealer
+const DEALER_DRAW_DELAY              := 0.6   # ⚠️ BALANCING — délai entre chaque carte du dealer en résolution
 
 # ── Economy ────────────────────────────────────────────────────────────────────
 const STARTING_SALT              := 100  # ⚠️ BALANCING — player starting Salt
@@ -39,4 +42,4 @@ const GOLD_SHELLS_BONUS_FAST    := 4    # ⚠️ BALANCING — bonus if win in <
 const GOLD_SHELLS_BONUS_QUICK   := 2    # ⚠️ BALANCING — bonus if win in < 5 hands
 const GOLD_SHELLS_FAST_THRESHOLD  := 3  # win in strictly fewer than 3 hands
 const GOLD_SHELLS_QUICK_THRESHOLD := 5  # win in strictly fewer than 5 hands
-const SHOP_MOON_PACK_PRICE        := 10  # ⚠️ BALANCING — cost of one Moon Pack in Gold Shells
+const SHOP_MOON_PACK_PRICE        := 7  # ⚠️ BALANCING — cost of one Moon Pack in Gold Shells

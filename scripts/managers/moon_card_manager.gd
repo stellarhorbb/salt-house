@@ -63,7 +63,7 @@ func _on_salt_stolen(amount: int) -> void:
 func _on_hand_resolved(result: StringName, _payout: int) -> void:
 	# New Moon : récupère X% de la mise sur défaite non-bust uniquement
 	if result == &"lose" and salt_recovery_pct > 0.0:
-		var recovery: int = int(_current_bet * salt_recovery_pct)
+		var recovery: int = ceili(_current_bet * salt_recovery_pct)
 		if recovery > 0:
 			BankrollManager.add(recovery)
 	_current_bet = 0

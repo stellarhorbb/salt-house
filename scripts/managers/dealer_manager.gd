@@ -39,6 +39,7 @@ func play_turn() -> void:
 			break
 		receive_card(card)
 		SignalBus.dealer_card_drawn.emit(card)
+		await get_tree().create_timer(GameRules.DEALER_DRAW_DELAY).timeout
 
 
 func _calculate_score(cards: Array) -> int:

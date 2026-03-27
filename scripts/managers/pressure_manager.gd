@@ -10,6 +10,7 @@ var pressure: float = GameRules.PRESSURE_BASE
 func _ready() -> void:
 	SignalBus.run_started.connect(_on_run_started)
 	SignalBus.zone_completed.connect(_on_zone_completed)
+	SignalBus.zone_changed.connect(_on_zone_changed)
 	SignalBus.player_hit.connect(_on_player_hit)
 
 
@@ -31,6 +32,11 @@ func _on_run_started() -> void:
 
 
 func _on_zone_completed() -> void:
+	reset()
+
+
+func _on_zone_changed(_zone_number: int) -> void:
+	# Reset au début de chaque nouvelle zone (après shop) pour appliquer les Moon Card bonus
 	reset()
 
 
