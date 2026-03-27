@@ -39,3 +39,4 @@ const GOLD_SHELLS_BONUS_FAST    := 4    # ⚠️ BALANCING — bonus if win in <
 const GOLD_SHELLS_BONUS_QUICK   := 2    # ⚠️ BALANCING — bonus if win in < 5 hands
 const GOLD_SHELLS_FAST_THRESHOLD  := 3  # win in strictly fewer than 3 hands
 const GOLD_SHELLS_QUICK_THRESHOLD := 5  # win in strictly fewer than 5 hands
+const SHOP_MOON_PACK_PRICE        := 10  # ⚠️ BALANCING — cost of one Moon Pack in Gold Shells

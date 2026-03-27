@@ -1,17 +1,21 @@
 # scripts/managers/shop_manager.gd
-# Autoload "ShopManager" — sole owner of the shop between zones.
-# Handles displayed inventory, purchases, and rerolls.
+# Autoload "ShopManager" — gère le stock entre les zones et les achats.
+# Pour l'instant : un seul Moon Pack composé de 2 cartes tirées aléatoirement.
 extends Node
 
 
+const FIRST_QUARTER := preload("res://resources/moon_cards/first_quarter.tres")
+const LAST_QUARTER  := preload("res://resources/moon_cards/last_quarter.tres")
+const FULL_MOON     := preload("res://resources/moon_cards/full_moon.tres")
+const NEW_MOON      := preload("res://resources/moon_cards/new_moon.tres")
+
 var reroll_count: int = 0
-var current_stock: Array = []  # Array[EchoResource | ...]
+# Les 2 Moon Cards actuellement dans le pack
+var pack_cards: Array[MoonCardResource] = []
 
 
 func _ready() -> void:
 	SignalBus.zone_completed.connect(_on_zone_completed)
-	SignalBus.shop_rerolled.connect(_on_shop_rerolled)
-	SignalBus.item_purchased.connect(_on_item_purchased)
 
 
 func get_reroll_cost() -> int:
@@ -34,9 +38,20 @@ func reroll() -> void:
 	SignalBus.shop_rerolled.emit()
 
 
+func can_buy_pack() -> bool:
+	return GoldShellManager.can_afford(GameRules.SHOP_MOON_PACK_PRICE)
+
+
+func buy_pack() -> void:
+	if not can_buy_pack():
+		return
+	GoldShellManager.remove(GameRules.SHOP_MOON_PACK_PRICE)
+
+
 func _populate_stock() -> void:
-	# ⚠️ TODO — random selection from Echo/Shell catalog
-	current_stock.clear()
+	var all: Array[MoonCardResource] = [FIRST_QUARTER, LAST_QUARTER, FULL_MOON, NEW_MOON]
+	all.shuffle()
+	pack_cards = [all[0], all[1]]
 
 
 # ── Signals ────────────────────────────────────────────────────────────────────
@@ -44,11 +59,3 @@ func _populate_stock() -> void:
 func _on_zone_completed() -> void:
 	reroll_count = 0
 	_populate_stock()
-
-
-func _on_shop_rerolled() -> void:
-	pass
-
-
-func _on_item_purchased(item) -> void:
-	current_stock.erase(item)

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="MoonCardResource" format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/moon_card_resource.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/moon_cards/last-moon-card.png" id="2"]
 
 [resource]
 script = ExtResource("1")
@@ -8,3 +9,4 @@ card_name = "Last Quarter"
 phase = &"last_quarter"
 effect_type = 1
 value = 0.2
+icon = ExtResource("2")
