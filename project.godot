@@ -29,6 +29,8 @@ PressureManager="*res://scripts/managers/pressure_manager.gd"
 EntityManager="*res://scripts/managers/entity_manager.gd"
 DealerManager="*res://scripts/managers/dealer_manager.gd"
 BattleManager="*res://scripts/managers/battle_manager.gd"
+GoldShellManager="*res://scripts/managers/gold_shell_manager.gd"
+MoonCardManager="*res://scripts/managers/moon_card_manager.gd"
 ShopManager="*res://scripts/managers/shop_manager.gd"
 
 [display]

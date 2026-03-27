@@ -41,6 +41,13 @@ signal salt_stolen(amount: int)  # player steals Salt from the Entity
 signal pressure_changed(new_pressure: float)
 signal pressure_reset()
 
+# ── Gold Shells ─────────────────────────────────────────────────────────────────
+signal gold_shells_changed(new_amount: int)
+signal gold_shells_earned(amount: int)  # shells gagnées post-combat (base + bonus)
+
+# ── Moon Cards ──────────────────────────────────────────────────────────────────
+signal moon_card_applied(card)  # MoonCardResource — consommée, effet appliqué
+
 # ── Shop / Rewards ─────────────────────────────────────────────────────────────
 signal reward_selected(reward)   # EchoResource | MutationResource
 signal echo_acquired(echo)       # EchoResource

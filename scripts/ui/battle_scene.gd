@@ -18,11 +18,11 @@ const CardVisualScene := preload("res://scenes/battle/hand/card_visual.tscn")
 @onready var zone_name_label: Label           = $Content/TopBar/ZoneInfo/ZoneNameLabel
 @onready var depth_label: Label               = $Content/TopBar/ZoneInfo/DepthLabel
 @onready var turn_counter_label: Label        = $Content/TopBar/TurnDisplay/TurnCounterLabel
-@onready var entity_salt_label: Label         = $Content/TopBar/EntityBarContainer/EntitySaltLabel
+@onready var entity_salt_label: Label         = $Content/TopBar/EntityBarContainer/EntitySaltRow/EntitySaltLabel
 @onready var entity_progress_bar: ProgressBar = $Content/TopBar/EntityBarContainer/EntityProgressBar
 
 # Player salt (always visible)
-@onready var player_salt_label: Label         = $Content/PlayerSaltDisplay/PlayerSaltAmountLabel
+@onready var player_salt_label: Label         = $Content/PlayerSaltDisplay/PlayerSaltRow/PlayerSaltAmountLabel
 
 # Deck display (always visible)
 @onready var deck_count_label: Label          = $Content/DeckDisplay/DeckCountLabel
@@ -50,6 +50,12 @@ const CardVisualScene := preload("res://scenes/battle/hand/card_visual.tscn")
 @onready var hit_button: Button              = $Content/PlayLayer/ActionButtons/HitButton
 @onready var stand_button: Button            = $Content/PlayLayer/ActionButtons/StandButton
 @onready var double_button: Button           = $Content/PlayLayer/ActionButtons/DoubleButton
+
+# Moon Cards panel (right side)
+@onready var moon_last_quarter_label: Label  = $Content/MoonCardPanel/MoonRow_LastQuarter/ValueLabel
+@onready var moon_full_moon_label: Label     = $Content/MoonCardPanel/MoonRow_FullMoon/ValueLabel
+@onready var moon_first_quarter_label: Label = $Content/MoonCardPanel/MoonRow_FirstQuarter/ValueLabel
+@onready var moon_new_moon_label: Label      = $Content/MoonCardPanel/MoonRow_NewMoon/ValueLabel
 
 # Safe area container
 @onready var _content: Control = $Content
@@ -94,6 +100,8 @@ func _ready() -> void:
 	SignalBus.dealer_card_revealed.connect(_on_dealer_card_revealed)
 	SignalBus.hand_resolved.connect(_on_hand_resolved)
 	SignalBus.run_ended.connect(_on_run_ended)
+	SignalBus.moon_card_applied.connect(_on_moon_card_applied)
+	SignalBus.run_started.connect(_refresh_moon_display)
 	restart_button.pressed.connect(_on_restart_pressed)
 
 	# Boutons de mise
@@ -300,6 +308,21 @@ func _show_result(result: StringName, payout: int) -> void:
 		&"push":
 			result_label.text = "PUSH"
 			result_label.modulate = normal_color
+
+
+func _on_moon_card_applied(_card: MoonCardResource) -> void:
+	_refresh_moon_display()
+
+
+func _refresh_moon_display() -> void:
+	var b: float = MoonCardManager.pressure_base_bonus
+	moon_first_quarter_label.text = "+%.2f" % b if b > 0.0 else "—"
+	var h: float = MoonCardManager.pressure_per_hit_bonus
+	moon_last_quarter_label.text = "+%.2f" % h if h > 0.0 else "—"
+	var s: float = MoonCardManager.salt_steal_bonus_pct
+	moon_full_moon_label.text = "+%d%%" % int(s * 100.0) if s > 0.0 else "—"
+	var r: float = MoonCardManager.salt_recovery_pct
+	moon_new_moon_label.text = "+%d%%" % int(r * 100.0) if r > 0.0 else "—"
 
 
 func _on_run_ended(victory: bool) -> void:

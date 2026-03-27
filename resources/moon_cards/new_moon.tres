@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MoonCardResource" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/moon_card_resource.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+card_name = "New Moon"
+phase = &"new_moon"
+effect_type = 3
+value = 0.05

@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cry5eegpfj1p2" path="res://assets/cards/backs/generic-back-icon.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://cny7d6eg3wuh2" path="res://assets/ui/icons/salt-icon-white.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://cya10peffrcxa" path="res://assets/ui/icons/pressure-yellow.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://d4kwww5k1phhl" path="res://assets/ui/icons/salt-icon.png" id="7"]
 
 [sub_resource type="StyleBoxFlat" id="pb_fill"]
 bg_color = Color(0, 0, 0, 1)
@@ -97,7 +98,20 @@ offset_right = 346.0
 offset_bottom = 100.0
 grow_horizontal = 2
 
-[node name="EntitySaltLabel" type="Label" parent="Content/TopBar/EntityBarContainer" unique_id=856980064]
+[node name="EntitySaltRow" type="HBoxContainer" parent="Content/TopBar/EntityBarContainer" unique_id=856980063]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="EntitySaltIcon" type="TextureRect" parent="Content/TopBar/EntityBarContainer/EntitySaltRow" unique_id=856980062]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EntitySaltLabel" type="Label" parent="Content/TopBar/EntityBarContainer/EntitySaltRow" unique_id=856980064]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2")
@@ -333,7 +347,19 @@ offset_top = -160.0
 offset_right = 260.0
 grow_vertical = 0
 
-[node name="PlayerSaltAmountLabel" type="Label" parent="Content/PlayerSaltDisplay" unique_id=900000006]
+[node name="PlayerSaltRow" type="HBoxContainer" parent="Content/PlayerSaltDisplay" unique_id=900000010]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PlayerSaltIcon" type="TextureRect" parent="Content/PlayerSaltDisplay/PlayerSaltRow" unique_id=900000011]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlayerSaltAmountLabel" type="Label" parent="Content/PlayerSaltDisplay/PlayerSaltRow" unique_id=900000006]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2")
@@ -496,6 +522,116 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 36
 text = "DOUBLE"
+
+[node name="MoonCardPanel" type="VBoxContainer" parent="Content" unique_id=800000001]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.35
+anchor_right = 1.0
+anchor_bottom = 0.35
+offset_left = -210.0
+offset_right = 0.0
+offset_bottom = 230.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="MoonPanelTitle" type="Label" parent="Content/MoonCardPanel" unique_id=800000002]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.5)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "MOON CARDS"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="MoonRow_LastQuarter" type="HBoxContainer" parent="Content/MoonCardPanel" unique_id=800000003]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PhaseLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_LastQuarter" unique_id=800000004]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "LAST QTR"
+uppercase = true
+
+[node name="ValueLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_LastQuarter" unique_id=800000005]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "—"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="MoonRow_FullMoon" type="HBoxContainer" parent="Content/MoonCardPanel" unique_id=800000006]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PhaseLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_FullMoon" unique_id=800000007]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "FULL MOON"
+uppercase = true
+
+[node name="ValueLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_FullMoon" unique_id=800000008]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "—"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="MoonRow_FirstQuarter" type="HBoxContainer" parent="Content/MoonCardPanel" unique_id=800000009]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PhaseLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_FirstQuarter" unique_id=800000010]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "FIRST QTR"
+uppercase = true
+
+[node name="ValueLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_FirstQuarter" unique_id=800000011]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "—"
+horizontal_alignment = 2
+uppercase = true
+
+[node name="MoonRow_NewMoon" type="HBoxContainer" parent="Content/MoonCardPanel" unique_id=800000012]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PhaseLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_NewMoon" unique_id=800000013]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "NEW MOON"
+uppercase = true
+
+[node name="ValueLabel" type="Label" parent="Content/MoonCardPanel/MoonRow_NewMoon" unique_id=800000014]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2")
+theme_override_font_sizes/font_size = 20
+text = "—"
+horizontal_alignment = 2
+uppercase = true
 
 [node name="GameOverOverlay" type="Control" parent="." unique_id=994563227]
 visible = false

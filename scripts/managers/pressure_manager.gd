@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func reset() -> void:
-	pressure = GameRules.PRESSURE_BASE
+	pressure = GameRules.PRESSURE_BASE + MoonCardManager.pressure_base_bonus
 	SignalBus.pressure_changed.emit(pressure)
 	SignalBus.pressure_reset.emit()
 
@@ -35,4 +35,4 @@ func _on_zone_completed() -> void:
 
 
 func _on_player_hit() -> void:
-	add(GameRules.PRESSURE_PER_HIT)
+	add(GameRules.PRESSURE_PER_HIT + MoonCardManager.pressure_per_hit_bonus)

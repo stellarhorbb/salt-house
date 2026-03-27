@@ -5,7 +5,7 @@ extends Node
 
 
 var reroll_count: int = 0
-var current_stock: Array = []  # Array[EchoResource | ShellResource]
+var current_stock: Array = []  # Array[EchoResource | ...]
 
 
 func _ready() -> void:
@@ -15,13 +15,20 @@ func _ready() -> void:
 
 
 func get_reroll_cost() -> int:
-	return GameRules.SHOP_REROLL_BASE_COST + reroll_count * GameRules.SHOP_REROLL_INCREMENT
+	if reroll_count >= GameRules.SHOP_REROLL_COSTS.size():
+		return GameRules.SHOP_REROLL_COSTS[-1]
+	return GameRules.SHOP_REROLL_COSTS[reroll_count]
+
+
+func can_reroll() -> bool:
+	return reroll_count < GameRules.SHOP_REROLL_COSTS.size() \
+		and GoldShellManager.can_afford(get_reroll_cost())
 
 
 func reroll() -> void:
-	if not BankrollManager.can_afford(get_reroll_cost()):
+	if not can_reroll():
 		return
-	BankrollManager.remove(get_reroll_cost())
+	GoldShellManager.remove(get_reroll_cost())
 	reroll_count += 1
 	_populate_stock()
 	SignalBus.shop_rerolled.emit()
