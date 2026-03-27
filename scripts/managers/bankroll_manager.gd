@@ -53,7 +53,7 @@ func _on_bet_increased(extra: int) -> void:
 
 func _on_hand_resolved(result: StringName, _payout: int) -> void:
 	match result:
-		&"win", &"blackjack", &"push":
+		&"win", &"twenty_one", &"blackjack", &"push":
 			add(_current_bet)
 	_current_bet = 0
 	if salt <= 0:

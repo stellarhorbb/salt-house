@@ -285,6 +285,9 @@ func _show_result(result: StringName, payout: int) -> void:
 		&"win":
 			result_label.text = "+ %s" % _fmt(payout)
 			result_label.modulate = Color(0.3, 1.0, 0.4)
+		&"twenty_one":
+			result_label.text = "21  + %s" % _fmt(payout)
+			result_label.modulate = Color(0.4, 0.9, 1.0)
 		&"blackjack":
 			result_label.text = "BLACKJACK  + %s" % _fmt(payout)
 			result_label.modulate = Color(1.0, 0.85, 0.0)

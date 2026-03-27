@@ -71,12 +71,14 @@ func _resolve_hand() -> void:
 
 	if player_score > GameRules.BUST_THRESHOLD:
 		result = &"bust"
-	elif DealerManager.score > GameRules.BUST_THRESHOLD:
-		result = &"win"
-		payout = int(current_bet * PressureManager.pressure)
-	elif player_score > DealerManager.score:
-		result = &"win"
-		payout = int(current_bet * PressureManager.pressure)
+	elif DealerManager.score > GameRules.BUST_THRESHOLD or player_score > DealerManager.score:
+		if player_score == GameRules.BUST_THRESHOLD:
+			# 21 au tirage — dégâts × 1.5
+			result = &"twenty_one"
+			payout = int(current_bet * PressureManager.pressure * GameRules.TWENTY_ONE_MULTIPLIER)
+		else:
+			result = &"win"
+			payout = int(current_bet * PressureManager.pressure)
 	elif player_score == DealerManager.score:
 		result = &"push"
 		payout = current_bet

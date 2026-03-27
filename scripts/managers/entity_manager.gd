@@ -70,5 +70,5 @@ func _on_run_started() -> void:
 
 
 func _on_hand_resolved(result: StringName, payout: int) -> void:
-	if result == &"win" or result == &"blackjack":
+	if result in [&"win", &"twenty_one", &"blackjack"]:
 		steal(payout)
